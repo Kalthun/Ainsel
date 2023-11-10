@@ -23,6 +23,12 @@ public class Player_Movement : MonoBehaviour
     private bool double_jump = false;
     private bool has_jumped = false;
 
+    private bool can_dash = true;
+    private bool is_dashing = false;
+    private float dash_power = 12f;
+    private float dash_time = 0.1f;
+    private float dash_cooldown = 1f;
+
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private Transform ground_check;
     [SerializeField] private LayerMask ground_layer;
@@ -32,10 +38,13 @@ public class Player_Movement : MonoBehaviour
     {
 
         Debug.Log("Double Jump: " + double_jump);
-        Debug.Log("Floating Jump: " + has_jumped);
+        Debug.Log("Has Jumped: " + has_jumped);
         Debug.Log("Coyote Time: " + coyote_counter);
 
-        body.velocity = new Vector2(horizontal * speed, body.velocity.y);
+        if (is_dashing)
+        {
+            return;
+        }
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
@@ -91,9 +100,24 @@ public class Player_Movement : MonoBehaviour
             coyote_counter = 0f;
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && can_dash) // ! make input action
+        {
+            StartCoroutine(Dash());
+        }
+
         // facing
         Flip();
 
+    }
+
+    private void FixedUpdate()
+    {
+        if (is_dashing)
+        {
+            return;
+        }
+
+        body.velocity = new Vector2(horizontal * speed, body.velocity.y);
     }
 
     private bool IsGrounded() {
@@ -114,5 +138,19 @@ public class Player_Movement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<Vector2>().x;
+    }
+
+    private IEnumerator Dash()
+    {
+        can_dash = false;
+        is_dashing = true;
+        float original_gravity = body.gravityScale;
+        body.gravityScale = 0f;
+        body.velocity = new Vector2(transform.localScale.x * dash_power, 0f);
+        yield return new WaitForSeconds(dash_time);
+        body.gravityScale = original_gravity;
+        is_dashing = false;
+        yield return new WaitForSeconds(dash_cooldown);
+        can_dash = true;
     }
 }
