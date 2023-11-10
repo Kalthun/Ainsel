@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,8 +26,8 @@ public class Player_Movement : MonoBehaviour
 
     private bool can_dash = true;
     private bool is_dashing = false;
-    private float dash_power = 12f;
-    private float dash_time = 0.1f;
+    private float dash_power = 24f;
+    private float dash_time = 0.2f;
     private float dash_cooldown = 1f;
 
     [SerializeField] private Rigidbody2D body;
@@ -39,7 +40,6 @@ public class Player_Movement : MonoBehaviour
 
         Debug.Log("Double Jump: " + double_jump);
         Debug.Log("Has Jumped: " + has_jumped);
-        Debug.Log("Coyote Time: " + coyote_counter);
 
         if (is_dashing)
         {
@@ -146,9 +146,23 @@ public class Player_Movement : MonoBehaviour
         is_dashing = true;
         float original_gravity = body.gravityScale;
         body.gravityScale = 0f;
-        body.velocity = new Vector2(transform.localScale.x * dash_power, 0f);
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            body.velocity = new Vector2(transform.localScale.x * dash_power, Math.Abs(transform.localScale.x * dash_power));
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            body.velocity = new Vector2(transform.localScale.x * dash_power, -1 * Math.Abs(transform.localScale.x * dash_power));
+        }
+        else
+        {
+            body.velocity = new Vector2(transform.localScale.x * dash_power, 0f);
+        }
+
         yield return new WaitForSeconds(dash_time);
         body.gravityScale = original_gravity;
+        body.velocity = new Vector2(transform.localScale.x, 0f);
         is_dashing = false;
         yield return new WaitForSeconds(dash_cooldown);
         can_dash = true;
