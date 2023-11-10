@@ -38,9 +38,6 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
 
-        Debug.Log("Double Jump: " + double_jump);
-        Debug.Log("Has Jumped: " + has_jumped);
-
         if (is_dashing)
         {
             return;
