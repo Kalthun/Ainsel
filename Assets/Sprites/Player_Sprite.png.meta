@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 47bfa2988aaaf30f9b7e5a3336b3338d
+labels:
+- Player
 TextureImporter:
   internalIDToNameTable:
   - first:

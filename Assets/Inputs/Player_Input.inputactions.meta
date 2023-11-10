@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 61b24c34b27a706078bfa1efb3155c2c
+labels:
+- Player
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
