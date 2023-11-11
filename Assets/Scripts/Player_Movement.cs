@@ -7,22 +7,22 @@ using UnityEngine.InputSystem.Controls;
 
 public class Player_Movement : MonoBehaviour
 {
-
+    //
     private float horizontal;
     private float speed = 8f;
+    private bool is_facing_right = true;
+
     private float normal_jump_power = 16f;
     private float double_jump_power = 8f;
-    private float floating_jump_power = 12f;
-    private bool is_facing_right = true;
+    private float falling_jump_power = 12f;
+    private bool double_jump = false;
+    private bool has_jumped = false;
 
     private float coyote_time = 0.2f;
     private float coyote_counter = 0f;
 
     private float jump_buffer_time = 0.2f;
     private float jump_buffer_counter = 0f;
-
-    private bool double_jump = false;
-    private bool has_jumped = false;
 
     private bool can_dash = true;
     private bool is_dashing = false;
@@ -81,7 +81,7 @@ public class Player_Movement : MonoBehaviour
             }
             else
             {
-                body.velocity = new Vector2(body.velocity.x, floating_jump_power);
+                body.velocity = new Vector2(body.velocity.x, falling_jump_power);
             }
 
             has_jumped = true;
