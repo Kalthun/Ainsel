@@ -35,7 +35,7 @@ public class Grapple : MonoBehaviour
 
                 transform.GetComponent<SpringJoint2D>().enabled = true;
                 transform.GetComponent<SpringJoint2D>().connectedAnchor = mousePos;
-                
+
                 transform.GetComponent<LineRenderer>().enabled = true;
                 transform.GetComponent<LineRenderer>().SetPosition(1, mousePos);
             }
