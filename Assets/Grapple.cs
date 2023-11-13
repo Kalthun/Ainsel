@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GrappleMode
+{
+    HookShot,
+    SwingShot,
+    KillShot
+}
+
 public class Grapple : MonoBehaviour
 {
 
@@ -9,10 +16,13 @@ public class Grapple : MonoBehaviour
 
     private float grapple_range;
 
+    private GrappleMode grapple_mode;
+
     // Start is called before the first frame update
     void Start()
     {
         grapple_range = 20f;
+        grapple_mode = GrappleMode.HookShot;
     }
 
     // Update is called once per frame
@@ -20,6 +30,36 @@ public class Grapple : MonoBehaviour
     {
 
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+
+        switch (grapple_mode)
+        {
+            case(GrappleMode.HookShot):
+                HookShot();
+            break;
+
+            case(GrappleMode.SwingShot):
+                SwingShot();
+            break;
+
+            default:
+            break;
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+
+    private void HookShot()
+    {
+
+        transform.GetComponent<SpringJoint2D>().distance = 0.1f;
 
         if (Input.GetButton("Fire1"))
         {
@@ -46,7 +86,12 @@ public class Grapple : MonoBehaviour
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
         }
+    }
+
+    private void SwingShot()
+    {
 
     }
+
 }
 
