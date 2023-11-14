@@ -487,10 +487,8 @@ GameObject:
   - component: {fileID: 1315328240}
   - component: {fileID: 1315328239}
   - component: {fileID: 1315328241}
-  - component: {fileID: 1315328238}
   - component: {fileID: 1315328243}
   - component: {fileID: 1315328246}
-  - component: {fileID: 1315328245}
   - component: {fileID: 1315328244}
   - component: {fileID: 1315328247}
   m_Layer: 3
@@ -500,23 +498,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1315328238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315328237}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89ce02e1010fa9cf7be931a2927af6e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  body: {fileID: 1315328241}
-  ground_check: {fileID: 1775533442}
-  ground_layer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!61 &1315328239
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -791,18 +772,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &1315328245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315328237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fccd6fbed9b19fc3c8fc62f7b0bcbc74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!231 &1315328246
 SpringJoint2D:
   m_ObjectHideFlags: 0
@@ -840,7 +809,7 @@ MonoBehaviour:
   ground_check: {fileID: 1775533442}
   ground_layer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1 &1589087273
 GameObject:
   m_ObjectHideFlags: 0
