@@ -38,8 +38,9 @@ public class Temp : MonoBehaviour
     private GrappleMode grapple_mode = GrappleMode.SwingShot;
     private bool can_grapple = true;
     private bool is_grappling = false;
-    private float grapple_range = 20f;
-    private float grapple_cooldown;
+    private float grapple_range = 5f;
+    private float grapple_cooldown = 2f;
+    private float grapple_miss_cooldown = 1f;
 
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private Transform ground_check;
@@ -56,9 +57,6 @@ public class Temp : MonoBehaviour
 
         if (is_grappling)
         {
-            mouse_position = Input.mousePosition;
-            mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
-            transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
             switch (grapple_mode)
             {
@@ -67,15 +65,17 @@ public class Temp : MonoBehaviour
                 break;
 
                 case GrappleMode.SwingShot:
-                if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") < 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") > 0))
+                if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") > 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") < 0))
                 {
-                    transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * 10;
+                    transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * -10;
                 }
                 break;
 
                 default:
                 break;
             }
+
+            transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
             return;
         }
@@ -146,6 +146,8 @@ public class Temp : MonoBehaviour
             StartCoroutine(Grapple());
         }
 
+        transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+
         // facing
         Flip();
 
@@ -202,6 +204,9 @@ public class Temp : MonoBehaviour
     private IEnumerator Grapple()
     {
 
+        mouse_position = Input.mousePosition;
+        mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
+
         int layerMask = ~LayerMask.GetMask("Player");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, mouse_position - (Vector2)transform.position, grapple_range, layerMask);
 
@@ -224,12 +229,22 @@ public class Temp : MonoBehaviour
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
             is_grappling = false;
-
-            yield return new WaitForSeconds(grapple_cooldown);
-
             can_grapple = true;
+
+        } else {
+
+            transform.GetComponent<LineRenderer>().enabled = true;
+
+            Vector2 delta = (mouse_position - (Vector2)transform.position).normalized * (Vector2.Distance((Vector2)transform.position, mouse_position) - grapple_range);
+
+            transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position - delta);
+
+            yield return new WaitForSeconds(grapple_miss_cooldown);
+
+            transform.GetComponent<LineRenderer>().enabled = false;
 
         }
 
     }
+
 }
