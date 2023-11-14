@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GrappleMode
-{
-    HookShot,
-    SwingShot,
-    KillShot
-}
+// public enum GrappleMode
+// {
+//     HookShot,
+//     SwingShot,
+//     KillShot
+// }
 
 public class Grapple : MonoBehaviour
 {
 
-    Vector2 mousePos;
+    Vector2 mouse_position;
 
     private float grapple_range;
 
@@ -56,23 +56,23 @@ public class Grapple : MonoBehaviour
 
         if (Input.GetButton("Fire1"))
         {
-            mousePos = Input.mousePosition;
-            mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+            mouse_position = Input.mousePosition;
+            mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
 
             Debug.Log(Math.Min(grapple_range, Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), transform.position)));
 
             int layerMask = ~LayerMask.GetMask("Player");
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, mousePos - (Vector2)transform.position, grapple_range, layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, mouse_position - (Vector2)transform.position, grapple_range, layerMask);
 
             if (hit.collider != null)
             {
-                mousePos = hit.point;
+                mouse_position = hit.point;
 
                 transform.GetComponent<SpringJoint2D>().enabled = true;
-                transform.GetComponent<SpringJoint2D>().connectedAnchor = mousePos;
+                transform.GetComponent<SpringJoint2D>().connectedAnchor = mouse_position;
 
                 transform.GetComponent<LineRenderer>().enabled = true;
-                transform.GetComponent<LineRenderer>().SetPosition(1, mousePos);
+                transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
 
                 transform.GetComponent<Player_Movement>().enabled = false;
             }
@@ -97,21 +97,21 @@ public class Grapple : MonoBehaviour
 
         if (Input.GetButton("Fire1"))
         {
-            mousePos = Input.mousePosition;
-            mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+            mouse_position = Input.mousePosition;
+            mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
 
             int layerMask = ~LayerMask.GetMask("Player");
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, mousePos - (Vector2)transform.position, grapple_range, layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, mouse_position - (Vector2)transform.position, grapple_range, layerMask);
 
             if (hit.collider != null)
             {
-                mousePos = hit.point;
+                mouse_position = hit.point;
 
                 transform.GetComponent<SpringJoint2D>().enabled = true;
-                transform.GetComponent<SpringJoint2D>().connectedAnchor = mousePos;
+                transform.GetComponent<SpringJoint2D>().connectedAnchor = mouse_position;
 
                 transform.GetComponent<LineRenderer>().enabled = true;
-                transform.GetComponent<LineRenderer>().SetPosition(1, mousePos);
+                transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
 
                 transform.GetComponent<Player_Movement>().enabled = false;
             }

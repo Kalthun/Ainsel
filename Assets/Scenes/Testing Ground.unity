@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 1315328246}
   - component: {fileID: 1315328245}
   - component: {fileID: 1315328244}
+  - component: {fileID: 1315328247}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -506,7 +507,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1315328237}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89ce02e1010fa9cf7be931a2927af6e3, type: 3}
   m_Name: 
@@ -751,7 +752,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.6426033, g: 1, b: 0.39027834, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -779,8 +780,8 @@ LineRenderer:
       m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
+    numCornerVertices: 1
+    numCapVertices: 10
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 1}
@@ -823,6 +824,23 @@ SpringJoint2D:
   m_Distance: 0.1
   m_DampingRatio: 1
   m_Frequency: 0
+--- !u!114 &1315328247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315328237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7813a1773c47374cacbf57e5fcd6681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 1315328241}
+  ground_check: {fileID: 1775533442}
+  ground_layer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1589087273
 GameObject:
   m_ObjectHideFlags: 0
