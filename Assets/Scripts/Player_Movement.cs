@@ -34,14 +34,15 @@ public class Player_Movement : MonoBehaviour
     private bool is_dashing = false;
     private float dash_power = 24f;
     private float dash_time = 0.2f;
-    private float dash_cooldown = 1f;
+    private float dash_cooldown = 0.5f;
 
     private GrappleMode grapple_mode = GrappleMode.SwingShot;
     private bool can_grapple = true;
     private bool is_grappling = false;
     private float grapple_range = 5f;
-    private float grapple_cooldown = 2f;
-    private float grapple_miss_cooldown = 1f;
+    private float grapple_length = 0.1f;
+    private float grapple_cooldown = 0.5f;
+    private float grapple_miss_cooldown = 0f;
 
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private Transform ground_check;
@@ -67,10 +68,11 @@ public class Player_Movement : MonoBehaviour
                 break;
 
                 case GrappleMode.SwingShot:
-                if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") > 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") < 0))
+                if ((grapple_length >= 0.1 && Input.GetAxis("Mouse ScrollWheel") > 0) || (grapple_length <= grapple_range && Input.GetAxis("Mouse ScrollWheel") < 0))
                 {
-                    transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * -10;
+                    grapple_length += Input.GetAxis("Mouse ScrollWheel") * -10;
                 }
+                transform.GetComponent<SpringJoint2D>().distance = grapple_length;
                 break;
 
                 default:
@@ -150,6 +152,12 @@ public class Player_Movement : MonoBehaviour
         // facing
         Flip();
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (grapple_mode == GrappleMode.HookShot) grapple_mode = GrappleMode.SwingShot;
+            else grapple_mode = GrappleMode.HookShot;
+        }
+
     }
 
     void FixedUpdate()
@@ -157,8 +165,10 @@ public class Player_Movement : MonoBehaviour
 
         if (is_dashing || is_grappling)
         {
+            Debug.Log("Grapple_Length: " + grapple_length);
             return;
         }
+        Debug.Log("Grapple_Length: " + grapple_length);
 
         body.velocity = new Vector2(horizontal * speed, body.velocity.y);
 
