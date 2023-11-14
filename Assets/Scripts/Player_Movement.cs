@@ -249,6 +249,7 @@ public class Player_Movement : MonoBehaviour
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
             is_grappling = false;
+            has_jumped = false; // ! testing
 
             yield return new WaitForSeconds(grapple_cooldown);
 
