@@ -59,6 +59,24 @@ public class Temp : MonoBehaviour
             mouse_position = Input.mousePosition;
             mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
             transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+
+            switch (grapple_mode)
+            {
+                case GrappleMode.HookShot:
+                transform.GetComponent<SpringJoint2D>().distance = 0.1f;
+                break;
+
+                case GrappleMode.SwingShot:
+                if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") < 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") > 0))
+                {
+                    transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * 10;
+                }
+                break;
+
+                default:
+                break;
+            }
+
             return;
         }
 
@@ -189,23 +207,6 @@ public class Temp : MonoBehaviour
 
         if (hit.collider != null)
         {
-
-            switch (grapple_mode)
-            {
-                case GrappleMode.HookShot:
-                transform.GetComponent<SpringJoint2D>().distance = 0.1f;
-                break;
-
-                case GrappleMode.SwingShot:
-                if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") < 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") > 0))
-                {
-                    transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * 10;
-                }
-                break;
-
-                default:
-                break;
-            }
 
             can_grapple = false;
             is_grappling = true;
