@@ -52,6 +52,7 @@ public class Temp : MonoBehaviour
 
         if (is_dashing)
         {
+            transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
             return;
         }
 
@@ -76,7 +77,6 @@ public class Temp : MonoBehaviour
             }
 
             transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
-
             return;
         }
 
@@ -236,15 +236,21 @@ public class Temp : MonoBehaviour
 
         } else {
 
+            can_grapple = false;
+
             transform.GetComponent<LineRenderer>().enabled = true;
 
             Vector2 delta = (mouse_position - (Vector2)transform.position).normalized * (Vector2.Distance((Vector2)transform.position, mouse_position) - grapple_range);
 
             transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position - delta);
 
-            yield return new WaitForSeconds(grapple_miss_cooldown);
+            yield return new WaitForSeconds(0.33f);
 
             transform.GetComponent<LineRenderer>().enabled = false;
+
+            yield return new WaitForSeconds(grapple_miss_cooldown);
+
+            can_grapple = true;
 
         }
 
