@@ -1,13 +1,19 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
+
+public enum GrappleMode
+{
+    HookShot,
+    SwingShot,
+    KillShot
+}
 
 public class Player_Movement : MonoBehaviour
 {
-    //
+    private Vector2 mouse_position;
     private float horizontal;
     private float speed = 8f;
     private bool is_facing_right = true;
@@ -30,6 +36,13 @@ public class Player_Movement : MonoBehaviour
     private float dash_time = 0.2f;
     private float dash_cooldown = 1f;
 
+    private GrappleMode grapple_mode = GrappleMode.SwingShot;
+    private bool can_grapple = true;
+    private bool is_grappling = false;
+    private float grapple_range = 5f;
+    private float grapple_cooldown = 2f;
+    private float grapple_miss_cooldown = 1f;
+
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private Transform ground_check;
     [SerializeField] private LayerMask ground_layer;
@@ -40,6 +53,31 @@ public class Player_Movement : MonoBehaviour
 
         if (is_dashing)
         {
+            transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+            return;
+        }
+
+        if (is_grappling)
+        {
+
+            switch (grapple_mode)
+            {
+                case GrappleMode.HookShot:
+                transform.GetComponent<SpringJoint2D>().distance = 0.1f;
+                break;
+
+                case GrappleMode.SwingShot:
+                if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") > 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") < 0))
+                {
+                    transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * -10;
+                }
+                break;
+
+                default:
+                break;
+            }
+
+            transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
             return;
         }
 
@@ -97,24 +135,33 @@ public class Player_Movement : MonoBehaviour
             coyote_counter = 0f;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && can_dash) // ! make input action
+        if (Input.GetKeyDown(KeyCode.LeftShift) && can_dash)
         {
             StartCoroutine(Dash());
         }
+
+        if (Input.GetButton("Fire1") && can_grapple)
+        {
+            StartCoroutine(Grapple());
+        }
+
+        transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
         // facing
         Flip();
 
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        if (is_dashing)
+
+        if (is_dashing || is_grappling)
         {
             return;
         }
 
         body.velocity = new Vector2(horizontal * speed, body.velocity.y);
+
     }
 
     private bool IsGrounded() {
@@ -164,4 +211,60 @@ public class Player_Movement : MonoBehaviour
         yield return new WaitForSeconds(dash_cooldown);
         can_dash = true;
     }
+
+    private IEnumerator Grapple()
+    {
+
+        mouse_position = Input.mousePosition;
+        mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
+
+        int layerMask = ~LayerMask.GetMask("Player");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, mouse_position - (Vector2)transform.position, grapple_range, layerMask);
+
+        if (hit.collider != null)
+        {
+
+            can_grapple = false;
+            is_grappling = true;
+
+            mouse_position = hit.point;
+
+            transform.GetComponent<SpringJoint2D>().enabled = true;
+            transform.GetComponent<SpringJoint2D>().connectedAnchor = mouse_position;
+
+            transform.GetComponent<LineRenderer>().enabled = true;
+            transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
+
+            yield return new WaitUntil(() => Input.GetButton("Fire2"));
+
+            transform.GetComponent<SpringJoint2D>().enabled = false;
+            transform.GetComponent<LineRenderer>().enabled = false;
+            is_grappling = false;
+
+            yield return new WaitForSeconds(grapple_cooldown);
+
+            can_grapple = true;
+
+        } else {
+
+            can_grapple = false;
+
+            transform.GetComponent<LineRenderer>().enabled = true;
+
+            Vector2 delta = (mouse_position - (Vector2)transform.position).normalized * (Vector2.Distance((Vector2)transform.position, mouse_position) - grapple_range);
+
+            transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position - delta);
+
+            yield return new WaitForSeconds(0.33f);
+
+            transform.GetComponent<LineRenderer>().enabled = false;
+
+            yield return new WaitForSeconds(grapple_miss_cooldown);
+
+            can_grapple = true;
+
+        }
+
+    }
+
 }
