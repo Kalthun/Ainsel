@@ -35,7 +35,7 @@ public class Temp : MonoBehaviour
     private float dash_time = 0.2f;
     private float dash_cooldown = 1f;
 
-    private GrappleMode grapple_mode = GrappleMode.HookShot;
+    private GrappleMode grapple_mode = GrappleMode.SwingShot;
     private bool can_grapple = true;
     private bool is_grappling = false;
     private float grapple_range = 20f;
@@ -49,8 +49,15 @@ public class Temp : MonoBehaviour
     void Update()
     {
 
-        if (is_dashing || is_grappling)
+        if (is_dashing)
         {
+            return;
+        }
+
+        if (is_grappling)
+        {
+            mouse_position = Input.mousePosition;
+            mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
             transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
             return;
         }
@@ -115,8 +122,6 @@ public class Temp : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
-
-        transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
         if (Input.GetButton("Fire1") && can_grapple)
         {
@@ -185,40 +190,35 @@ public class Temp : MonoBehaviour
         if (hit.collider != null)
         {
 
-            while(!Input.GetButton("Fire2"))
+            switch (grapple_mode)
             {
+                case GrappleMode.HookShot:
+                transform.GetComponent<SpringJoint2D>().distance = 0.1f;
+                break;
 
-                mouse_position = Input.mousePosition;
-                mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
-
-                switch (grapple_mode)
+                case GrappleMode.SwingShot:
+                if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") < 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") > 0))
                 {
-                    case GrappleMode.HookShot:
-                    transform.GetComponent<SpringJoint2D>().distance = 0.1f;
-                    break;
-
-                    case GrappleMode.SwingShot:
-                    if ((transform.GetComponent<SpringJoint2D>().distance >= 0.1 && Input.GetAxis("Mouse ScrollWheel") < 0) || (transform.GetComponent<SpringJoint2D>().distance <= grapple_range && Input.GetAxis("Mouse ScrollWheel") > 0))
-                    {
-                        transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * 10;
-                    }
-                    break;
-
-                    default:
-                    break;
+                    transform.GetComponent<SpringJoint2D>().distance += Input.GetAxis("Mouse ScrollWheel") * 10;
                 }
+                break;
 
-                can_grapple = false;
-                is_grappling = true;
-
-                mouse_position = hit.point;
-
-                transform.GetComponent<SpringJoint2D>().enabled = true;
-                transform.GetComponent<SpringJoint2D>().connectedAnchor = mouse_position;
-
-                transform.GetComponent<LineRenderer>().enabled = true;
-                transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
+                default:
+                break;
             }
+
+            can_grapple = false;
+            is_grappling = true;
+
+            mouse_position = hit.point;
+
+            transform.GetComponent<SpringJoint2D>().enabled = true;
+            transform.GetComponent<SpringJoint2D>().connectedAnchor = mouse_position;
+
+            transform.GetComponent<LineRenderer>().enabled = true;
+            transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
+
+            yield return new WaitUntil(() => Input.GetButton("Fire2"));
 
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
