@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,6 +41,8 @@ public class Player_Movement : MonoBehaviour
     private bool is_grappling = false;
     private float grapple_range = 5f;
     private float grapple_length = 0.1f;
+    private float grapple_time = 3.0f;
+    private bool grapple_release = false;
     private float grapple_cooldown = 0.5f;
     private float grapple_miss_cooldown = 0f;
 
@@ -221,6 +224,19 @@ public class Player_Movement : MonoBehaviour
         can_dash = true;
     }
 
+    private IEnumerator Release()
+    {
+
+        
+
+        grapple_release = true;
+
+        yield return new WaitUntil(() => !is_grappling);
+
+        grapple_release = false;
+
+    }
+
     private IEnumerator Grapple()
     {
 
@@ -244,12 +260,14 @@ public class Player_Movement : MonoBehaviour
             transform.GetComponent<LineRenderer>().enabled = true;
             transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
 
-            yield return new WaitUntil(() => Input.GetButton("Fire2"));
+            StartCoroutine(Release());
+
+            yield return new WaitUntil(() => Input.GetButton("Fire2") || grapple_release);
 
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
             is_grappling = false;
-            has_jumped = false; // ! testing
+            has_jumped = false; // ! testing (like it!!!)
 
             yield return new WaitForSeconds(grapple_cooldown);
 
