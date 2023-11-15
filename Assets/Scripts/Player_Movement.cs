@@ -184,7 +184,21 @@ public class Player_Movement : MonoBehaviour
             return;
         }
 
-        body.velocity = new Vector2(horizontal * speed, body.velocity.y);
+        if (Input.GetAxisRaw("Horizontal") == 0)
+        {
+            if (body.velocity.x > 0)
+            {
+                 body.velocity = new Vector2(body.velocity.x - 0.5f, body.velocity.y);
+            }
+            else if (body.velocity.x < 0)
+            {
+                 body.velocity = new Vector2(body.velocity.x + 0.5f, body.velocity.y);
+            }
+        }
+        else
+        {
+            body.velocity = new Vector2(horizontal * speed, body.velocity.y);
+        }
 
     }
 
@@ -201,11 +215,6 @@ public class Player_Movement : MonoBehaviour
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
-    }
-
-    public void Move(InputAction.CallbackContext context)
-    {
-        horizontal = context.ReadValue<Vector2>().x;
     }
 
     private IEnumerator Dash()
