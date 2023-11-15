@@ -6,8 +6,7 @@ using UnityEngine.InputSystem;
 public enum GrappleMode
 {
     HookShot,
-    SwingShot,
-    KillShot
+    SwingShot
 }
 
 public class Player_Movement : MonoBehaviour
@@ -21,7 +20,7 @@ public class Player_Movement : MonoBehaviour
 
     private float gravity = 4f;
     private float horizontal_decceleration = 0.5f;
-    private float max_fall_speed = -25f;
+    private float max_fall_speed = -15f;
 
     // jumping
     private float normal_jump_power = 20f;
@@ -86,7 +85,7 @@ public class Player_Movement : MonoBehaviour
             switch (grapple_mode)
             {
                 case GrappleMode.HookShot:
-                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1)
+                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_release_time < grapple_hold_time - 1)
                 {
                     grapple_release_time = -1f;
                 }
@@ -215,7 +214,7 @@ public class Player_Movement : MonoBehaviour
 
         if (body.velocity.y < 3 && body.velocity.y > 0)
         {
-            body.gravityScale = gravity / 2;
+            body.gravityScale = gravity / 2; // ! note
         }
         else
         {
@@ -277,7 +276,7 @@ public class Player_Movement : MonoBehaviour
         }
         transform.rotation = original_rotation;
         body.gravityScale = original_gravity;
-        body.velocity = new Vector2(0f, 0f);
+        body.velocity = new Vector2((transform.localScale.x > 0) ? speed : -1 * speed, 0f);
 
         is_dashing = false;
         yield return new WaitForSeconds(dash_cooldown);
