@@ -179,7 +179,8 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        Debug.Log(body.velocity.y);
+        Debug.Log(body.gravityScale);
+
 
         if (is_dashing || is_grappling)
         {
@@ -208,11 +209,11 @@ public class Player_Movement : MonoBehaviour
 
         if (body.velocity.y < 3 && body.velocity.y > 0)
         {
-            body.gravityScale = 1; // ! make var
+            body.gravityScale = 3 / 2; // ! make var
         }
         else
         {
-            body.gravityScale = 3; // ! make var
+            body.gravityScale = 3f; // ! make var
         }
 
     }
@@ -292,6 +293,7 @@ public class Player_Movement : MonoBehaviour
 
             can_grapple = false;
             is_grappling = true;
+            body.gravityScale = 3; // ! make var
 
             mouse_position = hit.point;
 
