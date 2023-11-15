@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,39 +12,47 @@ public enum GrappleMode
 
 public class Player_Movement : MonoBehaviour
 {
+
+    // generic movement
     private Vector2 mouse_position;
     private float horizontal;
     private float speed = 8f;
     private bool is_facing_right = true;
 
+    // jumping
     private float normal_jump_power = 16f;
     private float double_jump_power = 8f;
     private float falling_jump_power = 12f;
     private bool double_jump = false;
     private bool has_jumped = false;
 
+    // coyote time
     private float coyote_time = 0.2f;
     private float coyote_counter = 0f;
 
+    // jump buffer
     private float jump_buffer_time = 0.2f;
     private float jump_buffer_counter = 0f;
 
+    // dashing
     private bool can_dash = true;
     private bool is_dashing = false;
     private float dash_power = 24f;
     private float dash_time = 0.2f;
     private float dash_cooldown = 0.5f;
 
+    // grappling
     private GrappleMode grapple_mode = GrappleMode.SwingShot;
     private bool can_grapple = true;
     private bool is_grappling = false;
     private float grapple_range = 5f;
     private float grapple_length = 0.1f;
-    private float grapple_time = 3.0f;
-    private bool grapple_release = false;
+    private float grapple_hold_time = 3.0f;
+    private float grapple_release_time;
     private float grapple_cooldown = 0.5f;
     private float grapple_miss_cooldown = 0f;
 
+    // ! replace later
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private Transform ground_check;
     [SerializeField] private LayerMask ground_layer;
@@ -54,12 +61,16 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
 
+        // setting Line render to place body
+        transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+
+        // stop other execution while running CO-routine
         if (is_dashing)
         {
-            transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
             return;
         }
 
+        // stop other execution while running CO-routine
         if (is_grappling)
         {
 
@@ -81,7 +92,8 @@ public class Player_Movement : MonoBehaviour
                 break;
             }
 
-            transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+            grapple_release_time -= Time.deltaTime;
+
             return;
         }
 
@@ -149,8 +161,6 @@ public class Player_Movement : MonoBehaviour
             StartCoroutine(Grapple());
         }
 
-        transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
-
         // facing
         Flip();
 
@@ -167,10 +177,8 @@ public class Player_Movement : MonoBehaviour
 
         if (is_dashing || is_grappling)
         {
-            Debug.Log("Grapple_Length: " + grapple_length);
             return;
         }
-        Debug.Log("Grapple_Length: " + grapple_length);
 
         body.velocity = new Vector2(horizontal * speed, body.velocity.y);
 
@@ -224,19 +232,6 @@ public class Player_Movement : MonoBehaviour
         can_dash = true;
     }
 
-    private IEnumerator Release()
-    {
-
-        
-
-        grapple_release = true;
-
-        yield return new WaitUntil(() => !is_grappling);
-
-        grapple_release = false;
-
-    }
-
     private IEnumerator Grapple()
     {
 
@@ -260,9 +255,9 @@ public class Player_Movement : MonoBehaviour
             transform.GetComponent<LineRenderer>().enabled = true;
             transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
 
-            StartCoroutine(Release());
+            grapple_release_time = grapple_hold_time;
 
-            yield return new WaitUntil(() => Input.GetButton("Fire2") || grapple_release);
+            yield return new WaitUntil(() => Input.GetButton("Fire2") || grapple_release_time < 0);
 
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
