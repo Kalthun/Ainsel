@@ -270,9 +270,8 @@ public class Player_Movement : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + i * 0.01f, transform.localScale.z);
         }
         transform.rotation = original_rotation;
-
         body.gravityScale = original_gravity;
-        body.velocity = new Vector2(body.velocity.x, 0f);
+        body.velocity = new Vector2(0f, 0f);
 
         is_dashing = false;
         yield return new WaitForSeconds(dash_cooldown);
