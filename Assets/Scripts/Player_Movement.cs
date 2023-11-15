@@ -156,7 +156,7 @@ public class Player_Movement : MonoBehaviour
         // letting go early
         if (Input.GetButtonUp("Jump") && body.velocity.y > 0f)
         {
-            body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.5f);
+            body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.4f);
 
             coyote_counter = 0f;
         }
