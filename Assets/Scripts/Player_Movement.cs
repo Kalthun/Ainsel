@@ -279,6 +279,8 @@ public class Player_Movement : MonoBehaviour
         body.velocity = new Vector2((transform.localScale.x > 0) ? speed : -1 * speed, 0f);
 
         is_dashing = false;
+        has_jumped = false;
+
         yield return new WaitForSeconds(dash_cooldown);
         can_dash = true;
     }
