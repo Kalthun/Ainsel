@@ -179,25 +179,40 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
+        Debug.Log(body.velocity.y);
+
         if (is_dashing || is_grappling)
         {
             return;
         }
 
-        if (Input.GetAxisRaw("Horizontal") == 0)
+        if (Input.GetAxisRaw("Horizontal") == 0 && !IsGrounded())
         {
             if (body.velocity.x > 0)
             {
-                 body.velocity = new Vector2(body.velocity.x - 0.5f, body.velocity.y);
+                 body.velocity = new Vector2(body.velocity.x - 0.5f, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
             }
             else if (body.velocity.x < 0)
             {
-                 body.velocity = new Vector2(body.velocity.x + 0.5f, body.velocity.y);
+                 body.velocity = new Vector2(body.velocity.x + 0.5f, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
+            }
+            else
+            {
+                body.velocity = new Vector2(0f, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
             }
         }
         else
         {
-            body.velocity = new Vector2(horizontal * speed, body.velocity.y);
+            body.velocity = new Vector2(horizontal * speed, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
+        }
+
+        if (body.velocity.y < 5 && body.velocity.y > 0)
+        {
+            body.gravityScale = 1; // ! make var
+        }
+        else
+        {
+            body.gravityScale = 3; // ! make var
         }
 
     }
@@ -222,24 +237,42 @@ public class Player_Movement : MonoBehaviour
         can_dash = false;
         is_dashing = true;
         float original_gravity = body.gravityScale;
+        Quaternion original_rotation = transform.rotation;
         body.gravityScale = 0f;
+
+        // ! make var
+        for(int i = 0; i < 10; i++)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - i * 0.01f, transform.localScale.z);
+        }
 
         if (Input.GetKey(KeyCode.W))
         {
-            body.velocity = new Vector2(transform.localScale.x * dash_power, Math.Abs(transform.localScale.x * dash_power));
+            body.velocity = new Vector2((transform.localScale.x > 0) ? dash_power : -1 * dash_power, dash_power);
+            transform.Rotate(0,0,(transform.localScale.x > 0) ? 45 : -45);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            body.velocity = new Vector2(transform.localScale.x * dash_power, -1 * Math.Abs(transform.localScale.x * dash_power));
+            body.velocity = new Vector2((transform.localScale.x > 0) ? dash_power : -1 * dash_power, -1 * dash_power);
+            transform.Rotate(0,0,(transform.localScale.x > 0) ? -45 : 45);
         }
         else
         {
-            body.velocity = new Vector2(transform.localScale.x * dash_power, 0f);
+            body.velocity = new Vector2((transform.localScale.x > 0) ? dash_power : -1 * dash_power, 0f);
         }
 
         yield return new WaitForSeconds(dash_time);
+
+        // ! make var
+        for(int i = 0; i < 10; i++)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + i * 0.01f, transform.localScale.z);
+        }
+        transform.rotation = original_rotation;
+
         body.gravityScale = original_gravity;
-        body.velocity = new Vector2(transform.localScale.x, 0f);
+        body.velocity = new Vector2(body.velocity.x, 0f);
+
         is_dashing = false;
         yield return new WaitForSeconds(dash_cooldown);
         can_dash = true;
