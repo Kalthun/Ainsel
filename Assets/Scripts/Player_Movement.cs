@@ -46,7 +46,7 @@ public class Player_Movement : MonoBehaviour
     private bool can_grapple = true;
     private bool is_grappling = false;
     private float grapple_range = 5f;
-    private float grapple_length = 0.1f;
+    private float grapple_length = 2.5f;
     private float grapple_hold_time = 3.0f;
     private float grapple_release_time;
     private float grapple_cooldown = 0.5f;
@@ -60,6 +60,10 @@ public class Player_Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // facing
+        horizontal = Input.GetAxisRaw("Horizontal");
+        Flip();
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
@@ -77,11 +81,11 @@ public class Player_Movement : MonoBehaviour
             switch (grapple_mode)
             {
                 case GrappleMode.HookShot:
-                transform.GetComponent<SpringJoint2D>().distance = 0.1f;
+                transform.GetComponent<SpringJoint2D>().distance = 0f;
                 break;
 
                 case GrappleMode.SwingShot:
-                if ((grapple_length >= 0.1 && Input.GetAxis("Mouse ScrollWheel") > 0) || (grapple_length <= grapple_range && Input.GetAxis("Mouse ScrollWheel") < 0))
+                if ((grapple_length > 0 && Input.GetAxis("Mouse ScrollWheel") > 0) || (grapple_length < grapple_range && Input.GetAxis("Mouse ScrollWheel") < 0))
                 {
                     grapple_length += Input.GetAxis("Mouse ScrollWheel") * -10;
                 }
@@ -96,8 +100,6 @@ public class Player_Movement : MonoBehaviour
 
             return;
         }
-
-        horizontal = Input.GetAxisRaw("Horizontal");
 
         if (IsGrounded() && !Input.GetButton("Jump"))
         {
@@ -160,9 +162,6 @@ public class Player_Movement : MonoBehaviour
         {
             StartCoroutine(Grapple());
         }
-
-        // facing
-        Flip();
 
         if (Input.GetKeyDown(KeyCode.R))
         {
