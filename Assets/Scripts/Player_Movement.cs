@@ -15,10 +15,13 @@ public class Player_Movement : MonoBehaviour
 
     // generic movement
     private Vector2 mouse_position;
-    private float gravity = 5f;
     private float horizontal;
     private float speed = 8f;
     private bool is_facing_right = true;
+
+    private float gravity = 5f;
+    private float horizontal_decceleration = 0.05f;
+    private float max_fall_speed = -30f;
 
     // jumping
     private float normal_jump_power = 16f;
@@ -192,29 +195,29 @@ public class Player_Movement : MonoBehaviour
         {
             if (body.velocity.x > 0)
             {
-                 body.velocity = new Vector2(body.velocity.x - 0.5f, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
+                 body.velocity = new Vector2(body.velocity.x - horizontal_decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
             }
             else if (body.velocity.x < 0)
             {
-                 body.velocity = new Vector2(body.velocity.x + 0.5f, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
+                 body.velocity = new Vector2(body.velocity.x + horizontal_decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
             }
             else
             {
-                body.velocity = new Vector2(0f, ((body.velocity.y < -20f) && !Input.GetKey(KeyCode.S)) ? -20f : body.velocity.y);
+                body.velocity = new Vector2(0f, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
             }
         }
         else
         {
-            body.velocity = new Vector2(horizontal * speed, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
+            body.velocity = new Vector2(horizontal * speed, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
         }
 
         if (body.velocity.y < 3 && body.velocity.y > 0)
         {
-            body.gravityScale = gravity / 2; // ! make var
+            body.gravityScale = gravity / 2;
         }
         else
         {
-            body.gravityScale = gravity; // ! make var
+            body.gravityScale = gravity;
         }
 
     }
