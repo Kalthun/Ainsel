@@ -198,7 +198,7 @@ public class Player_Movement : MonoBehaviour
             }
             else
             {
-                body.velocity = new Vector2(0f, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
+                body.velocity = new Vector2(0f, ((body.velocity.y < -20f) && !Input.GetKey(KeyCode.S)) ? -20f : body.velocity.y);
             }
         }
         else
@@ -206,7 +206,7 @@ public class Player_Movement : MonoBehaviour
             body.velocity = new Vector2(horizontal * speed, ((body.velocity.y < -10f) && !Input.GetKey(KeyCode.S)) ? -10f : body.velocity.y);
         }
 
-        if (body.velocity.y < 5 && body.velocity.y > 0)
+        if (body.velocity.y < 3 && body.velocity.y > 0)
         {
             body.gravityScale = 1; // ! make var
         }
