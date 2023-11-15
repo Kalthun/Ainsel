@@ -39,17 +39,18 @@ public class Player_Movement : MonoBehaviour
     private bool is_dashing = false;
     private float dash_power = 24f;
     private float dash_time = 0.2f;
-    private float dash_cooldown = 0.5f;
+    private float dash_cooldown = 0.1f;
 
     // grappling
+    RaycastHit2D hit;
     private GrappleMode grapple_mode = GrappleMode.SwingShot;
     private bool can_grapple = true;
     private bool is_grappling = false;
-    private float grapple_range = 5f;
+    private float grapple_range = 10f;
     private float grapple_length = 2.5f;
     private float grapple_hold_time = 3.0f;
     private float grapple_release_time;
-    private float grapple_cooldown = 0.5f;
+    private float grapple_cooldown = 0.1f;
     private float grapple_miss_cooldown = 0f;
 
     // ! replace later
@@ -81,6 +82,10 @@ public class Player_Movement : MonoBehaviour
             switch (grapple_mode)
             {
                 case GrappleMode.HookShot:
+                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1)
+                {
+                    grapple_release_time = -1f;
+                }
                 transform.GetComponent<SpringJoint2D>().distance = 0f;
                 break;
 
@@ -238,7 +243,7 @@ public class Player_Movement : MonoBehaviour
         mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
 
         int layerMask = ~LayerMask.GetMask("Player");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, mouse_position - (Vector2)transform.position, grapple_range, layerMask);
+        hit = Physics2D.Raycast(transform.position, mouse_position - (Vector2)transform.position, grapple_range, layerMask);
 
         if (hit.collider != null)
         {
