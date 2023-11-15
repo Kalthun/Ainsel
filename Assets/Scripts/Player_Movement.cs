@@ -15,6 +15,7 @@ public class Player_Movement : MonoBehaviour
 
     // generic movement
     private Vector2 mouse_position;
+    private float gravity = 5f;
     private float horizontal;
     private float speed = 8f;
     private bool is_facing_right = true;
@@ -209,11 +210,11 @@ public class Player_Movement : MonoBehaviour
 
         if (body.velocity.y < 3 && body.velocity.y > 0)
         {
-            body.gravityScale = 3 / 2; // ! make var
+            body.gravityScale = gravity / 2; // ! make var
         }
         else
         {
-            body.gravityScale = 3f; // ! make var
+            body.gravityScale = gravity; // ! make var
         }
 
     }
@@ -292,7 +293,7 @@ public class Player_Movement : MonoBehaviour
 
             can_grapple = false;
             is_grappling = true;
-            body.gravityScale = 3; // ! make var
+            body.gravityScale = gravity;
 
             mouse_position = hit.point;
 
