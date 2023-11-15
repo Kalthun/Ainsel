@@ -14,12 +14,12 @@ public class Player_Movement : MonoBehaviour
 
     // generic movement
     private Vector2 mouse_position;
-    private float horizontal;
-    private float speed = 8f;
-    private bool is_facing_right = true;
+    private float horizontal; // need more logic
+    private float speed = 10f;
+    private bool is_facing_right = true; // make int: (-1, left), (0, idle), (1, right)
 
     private float gravity = 4f;
-    private float horizontal_decceleration = 0.5f;
+    private float horizontal_decceleration = 0.4f;
     private float max_fall_speed = -15f;
 
     // jumping
@@ -212,7 +212,7 @@ public class Player_Movement : MonoBehaviour
 
 
 
-        if (body.velocity.y < 3 && body.velocity.y > 0)
+        if (body.velocity.y < 1 && body.velocity.y > -1)
         {
             body.gravityScale = gravity / 2; // ! note
         }
