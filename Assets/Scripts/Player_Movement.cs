@@ -20,7 +20,7 @@ public class Player_Movement : MonoBehaviour
     private bool is_facing_right = true;
 
     private float gravity = 4f;
-    private float horizontal_decceleration = 0.05f;
+    private float horizontal_decceleration = 0.5f;
     private float max_fall_speed = -25f;
 
     // jumping
