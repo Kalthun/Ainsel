@@ -19,14 +19,14 @@ public class Player_Movement : MonoBehaviour
     private float speed = 8f;
     private bool is_facing_right = true;
 
-    private float gravity = 5f;
+    private float gravity = 4f;
     private float horizontal_decceleration = 0.05f;
-    private float max_fall_speed = -30f;
+    private float max_fall_speed = -25f;
 
     // jumping
-    private float normal_jump_power = 16f;
-    private float double_jump_power = 8f;
-    private float falling_jump_power = 12f;
+    private float normal_jump_power = 20f;
+    private float double_jump_power = 10f;
+    private float falling_jump_power = 15f;
     private bool double_jump = false;
     private bool has_jumped = false;
 
@@ -183,7 +183,7 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        Debug.Log(body.gravityScale);
+        Debug.Log(body.velocity.y);
 
 
         if (is_dashing || is_grappling)
@@ -210,6 +210,8 @@ public class Player_Movement : MonoBehaviour
         {
             body.velocity = new Vector2(horizontal * speed, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
         }
+
+
 
         if (body.velocity.y < 3 && body.velocity.y > 0)
         {
