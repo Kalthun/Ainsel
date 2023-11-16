@@ -42,7 +42,7 @@ public class Player_Movement : MonoBehaviour
     private bool is_dashing = false;
     private float dash_power = 24f;
     private float dash_time = 0.2f;
-    private float dash_cooldown = 0.1f;
+    private float dash_cooldown = 2f;
 
     // grappling
     RaycastHit2D hit;
@@ -53,7 +53,7 @@ public class Player_Movement : MonoBehaviour
     private float grapple_length = 2.5f;
     private float grapple_hold_time = 3.0f;
     private float grapple_release_time;
-    private float grapple_cooldown = 0.1f;
+    private float grapple_cooldown = 2f;
     private float grapple_miss_cooldown = 0f;
     private float grapple_speed_time = 2f;
     private float grapple_speed_counter;
