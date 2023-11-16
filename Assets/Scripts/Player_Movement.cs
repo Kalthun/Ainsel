@@ -55,6 +55,8 @@ public class Player_Movement : MonoBehaviour
     private float grapple_release_time;
     private float grapple_cooldown = 0.1f;
     private float grapple_miss_cooldown = 0f;
+    private float grapple_speed_time = 2f;
+    private float grapple_speed_counter;
 
     // ! replace later
     [SerializeField] private Rigidbody2D body;
@@ -134,6 +136,10 @@ public class Player_Movement : MonoBehaviour
             jump_buffer_counter -= Time.deltaTime;
         }
 
+        if (grapple_speed_counter > 0) {
+            grapple_speed_counter -= Time.deltaTime;
+        }
+
         // jump logic
         if ((jump_buffer_counter > 0f && coyote_counter > 0f) || (Input.GetButtonDown("Jump") && double_jump) || (Input.GetButtonDown("Jump") && !has_jumped))
         {
@@ -182,13 +188,15 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        Debug.Log(body.velocity.y);
+        Debug.Log(body.velocity.x);
 
 
         if (is_dashing || is_grappling)
         {
             return;
         }
+
+
 
         if (Input.GetAxisRaw("Horizontal") == 0 && !IsGrounded())
         {
@@ -315,8 +323,11 @@ public class Player_Movement : MonoBehaviour
 
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
+
+            grapple_speed_counter = grapple_speed_time;
+
             is_grappling = false;
-            has_jumped = false; // ! testing (like it!!!)
+            has_jumped = false;
 
             yield return new WaitForSeconds(grapple_cooldown);
 
