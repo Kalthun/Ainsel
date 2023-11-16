@@ -42,7 +42,7 @@ public class Player_Movement : MonoBehaviour
     private bool is_dashing = false;
     private float dash_power = 24f;
     private float dash_time = 0.2f;
-    private float dash_cooldown = 2f;
+    private float dash_cooldown = 0f;
 
     // grappling
     RaycastHit2D hit;
@@ -53,7 +53,7 @@ public class Player_Movement : MonoBehaviour
     private float grapple_length = 2.5f;
     private float grapple_hold_time = 3.0f;
     private float grapple_release_time;
-    private float grapple_cooldown = 2f;
+    private float grapple_cooldown = 0f;
     private float grapple_miss_cooldown = 0f;
     private float grapple_speed_time = 2f;
     private float grapple_speed_counter;
@@ -284,7 +284,8 @@ public class Player_Movement : MonoBehaviour
         }
         transform.rotation = original_rotation;
         body.gravityScale = original_gravity;
-        body.velocity = new Vector2((transform.localScale.x > 0) ? speed : -1 * speed, 0f);
+        // body.velocity = new Vector2((transform.localScale.x > 0) ? speed : -1 * speed, 0f);
+        body.velocity = new Vector2(body.velocity.x, 0f);
 
         is_dashing = false;
         has_jumped = false;
