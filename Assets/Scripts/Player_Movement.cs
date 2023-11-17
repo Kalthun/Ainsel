@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 
 
@@ -20,8 +19,8 @@ public class Player_Movement : MonoBehaviour
     private float move_velocity = 10f;
     private float decceleration = 1f;
     private float max_fall_speed = -15f;
-    private float up_gravity = 5f;
-    private float down_gravity = 6f;
+    private float up_gravity = 4f;
+    private float down_gravity = 8f;
     private bool force_down = false;
 
 
@@ -217,7 +216,7 @@ public class Player_Movement : MonoBehaviour
         }
 
         // letting go early
-        if (Input.GetButtonUp("Jump") && body.velocity.y > 0f)
+        if (Input.GetButtonUp("Jump") && body.velocity.y > -1f)
         {
             force_down = true;
 
@@ -240,7 +239,7 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        Debug.Log(body.velocity.x);
+        Debug.Log(force_down);
 
         if (is_dashing || is_grappling)
         {
@@ -385,7 +384,7 @@ public class Player_Movement : MonoBehaviour
 
             can_grapple = false;
             is_grappling = true;
-            body.gravityScale = down_gravity;
+            body.gravityScale = up_gravity;
 
             mouse_position = hit.point;
 
