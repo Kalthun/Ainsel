@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 
@@ -14,13 +15,13 @@ public class Player_Movement : MonoBehaviour
 
     // generic movement
     private Vector2 mouse_position;
-    private float horizontal_direction;
+    private float moving;
     private bool is_facing_right = true;
     private float move_velocity = 10f;
-    private float decceleration = 1;
+    private float decceleration = 1f;
     private float max_fall_speed = -15f;
-    private float up_gravity = 4f;
-    private float down_gravity = 5f;
+    private float up_gravity = 5f;
+    private float down_gravity = 6f;
 
 
     // jumping
@@ -75,7 +76,7 @@ public class Player_Movement : MonoBehaviour
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case < 0:
-                horizontal_direction = -1;
+                moving = -1;
                 if (is_facing_right && !is_grappling)
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
@@ -83,7 +84,7 @@ public class Player_Movement : MonoBehaviour
                 break;
 
             case > 0:
-                horizontal_direction = 1;
+                moving = 1;
                 if (!is_facing_right && !is_grappling)
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
@@ -155,6 +156,15 @@ public class Player_Movement : MonoBehaviour
             body.gravityScale = up_gravity / 2;
         }
 
+        if (body.velocity.y < max_fall_speed && !Input.GetKey(KeyCode.S))
+        {
+            body.velocity = new Vector2(body.velocity.x, max_fall_speed);
+        }
+        else
+        {
+            body.velocity = new Vector2(body.velocity.x, body.velocity.y);
+        }
+
         // jump reset
         if (IsGrounded() && !Input.GetButton("Jump"))
         {
@@ -203,7 +213,7 @@ public class Player_Movement : MonoBehaviour
         // letting go early
         if (Input.GetButtonUp("Jump") && body.velocity.y > 0f)
         {
-            body.velocity = new Vector2(body.velocity.x, body.velocity.y);
+
 
             coyote_counter = 0f;
         }
@@ -226,7 +236,6 @@ public class Player_Movement : MonoBehaviour
 
         Debug.Log(body.velocity.x);
 
-
         if (is_dashing || is_grappling)
         {
             return;
@@ -240,8 +249,14 @@ public class Player_Movement : MonoBehaviour
         {
             if (Input.GetAxisRaw("Horizontal") == 0)
             {
-                body.velocity = new Vector2(body.velocity.x + ((body.velocity.x > 0) ? -1 * decceleration : decceleration), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-                Debug.Log(body.velocity.x);
+                if ( body.velocity.x > -0.5 && body.velocity.x < 0.5)
+                {
+                    body.velocity = new Vector2(0, body.velocity.y);
+                }
+                else
+                {
+                    body.velocity = new Vector2(body.velocity.x + ((body.velocity.x > 0) ? -1 * decceleration : decceleration), body.velocity.y);
+                }
             }
             else
             {
@@ -249,27 +264,27 @@ public class Player_Movement : MonoBehaviour
                 {
                     if (body.velocity.x > move_velocity)
                     {
-                        body.velocity = new Vector2(horizontal_direction * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                        body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), body.velocity.y);
                     }
                     else
                     {
-                        body.velocity = new Vector2(horizontal_direction * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                        body.velocity = new Vector2(moving * move_velocity, body.velocity.y);
                     }
                 }
                 else if (body.velocity.x < 0)
                 {
                     if (body.velocity.x < -1 * move_velocity)
                     {
-                        body.velocity = new Vector2(horizontal_direction * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                        body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), body.velocity.y);
                     }
                     else
                     {
-                    body.velocity = new Vector2(horizontal_direction * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                    body.velocity = new Vector2(moving * move_velocity, body.velocity.y);
                     }
                 }
                 else
                 {
-                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, body.velocity.y);
                 }
             }
         }
@@ -282,7 +297,7 @@ public class Player_Movement : MonoBehaviour
 
     private void Flip()
     {
-        if ((is_facing_right && horizontal_direction < 0f) || (!is_facing_right && horizontal_direction > 0f))
+        if ((is_facing_right && moving < 0f) || (!is_facing_right && moving > 0f))
         {
             is_facing_right = !is_facing_right;
             Vector3 localScale = transform.localScale;
@@ -312,17 +327,17 @@ public class Player_Movement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            body.velocity = new Vector2((horizontal_direction > 0) ? dash_power : -1 * dash_power, dash_power);
-            transform.Rotate(0,0,(horizontal_direction > 0) ? 45 : -45);
+            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, dash_power);
+            transform.Rotate(0,0,(moving > 0) ? 45 : -45);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            body.velocity = new Vector2((horizontal_direction > 0) ? dash_power : -1 * dash_power, -1 * dash_power);
-            transform.Rotate(0,0,(horizontal_direction > 0) ? -45 : 45);
+            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, -1 * dash_power);
+            transform.Rotate(0,0,(moving > 0) ? -45 : 45);
         }
         else
         {
-            body.velocity = new Vector2((horizontal_direction > 0) ? dash_power : -1 * dash_power, 0f);
+            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, 0f);
         }
 
         yield return new WaitUntil(() => dash_time_counter < 0 || is_grappling);
@@ -333,15 +348,14 @@ public class Player_Movement : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + i * 0.01f, transform.localScale.z);
         }
         transform.rotation = original_rotation;
-        body.gravityScale = original_gravity;
 
         if (is_grappling)
         {
-            body.velocity = new Vector2(horizontal_direction * Math.Abs(body.velocity.x), 0f);
+            body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), 0f);
         }
         else
         {
-            body.velocity = new Vector2(horizontal_direction * move_velocity, 0f);
+            body.velocity = new Vector2(moving * move_velocity, 0f);
         }
 
         is_dashing = false;
@@ -385,15 +399,15 @@ public class Player_Movement : MonoBehaviour
             switch (body.velocity.x)
             {
                 case < 0:
-                horizontal_direction = -1;
+                moving = -1;
                 break;
 
                 case > 0:
-                horizontal_direction = 1;
+                moving = 1;
                 break;
 
                 default:
-                horizontal_direction = 0;
+                moving = 0;
                 break;
 
             }
