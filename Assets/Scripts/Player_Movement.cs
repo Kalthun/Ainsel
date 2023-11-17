@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public enum GrappleMode
 {
@@ -14,20 +14,19 @@ public class Player_Movement : MonoBehaviour
 
     // generic movement
     private Vector2 mouse_position;
-    private float horizontal; // need more logic
-    private float speed = 10f;
-    private bool is_facing_right = true; // make int: (-1, left), (0, idle), (1, right)
-
-    private float gravity = 4f;
-    private float horizontal_decceleration = 0.4f;
+    private float moving;
+    private bool is_facing_right = true;
+    private float move_velocity = 10f;
+    private float decceleration = 0.5f;
     private float max_fall_speed = -15f;
+    private float gravity = 4f;
 
     // jumping
     private float normal_jump_power = 20f;
-    private float double_jump_power = 10f;
     private float falling_jump_power = 15f;
-    private bool double_jump = false;
+    private float double_jump_power = 10f;
     private bool has_jumped = false;
+    private bool double_jump = false;
 
     // coyote time
     private float coyote_time = 0.2f;
@@ -55,8 +54,6 @@ public class Player_Movement : MonoBehaviour
     private float grapple_release_time;
     private float grapple_cooldown = 0f;
     private float grapple_miss_cooldown = 0f;
-    private float grapple_speed_time = 2f;
-    private float grapple_speed_counter;
 
     // ! replace later
     [SerializeField] private Rigidbody2D body;
@@ -67,9 +64,26 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
 
-        // facing
-        horizontal = Input.GetAxisRaw("Horizontal");
+        switch (Input.GetAxisRaw("Horizontal"))
+        {
+            case < 0:
+                decceleration = 0f;
+                moving = -1;
+                break;
+
+            case > 0:
+                decceleration = 0f;
+                moving = 1;
+                break;
+
+            default:
+                decceleration = 0.5f;
+                break;
+        }
+
         Flip();
+
+        Animate();
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
@@ -111,6 +125,7 @@ public class Player_Movement : MonoBehaviour
             return;
         }
 
+        // jump reset
         if (IsGrounded() && !Input.GetButton("Jump"))
         {
             has_jumped = double_jump = false;
@@ -134,10 +149,6 @@ public class Player_Movement : MonoBehaviour
         else
         {
             jump_buffer_counter -= Time.deltaTime;
-        }
-
-        if (grapple_speed_counter > 0) {
-            grapple_speed_counter -= Time.deltaTime;
         }
 
         // jump logic
@@ -196,29 +207,35 @@ public class Player_Movement : MonoBehaviour
             return;
         }
 
-
-
-        if (Input.GetAxisRaw("Horizontal") == 0 && !IsGrounded())
+        if (IsGrounded())
         {
-            if (body.velocity.x > 0)
-            {
-                 body.velocity = new Vector2(body.velocity.x - horizontal_decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-            }
-            else if (body.velocity.x < 0)
-            {
-                 body.velocity = new Vector2(body.velocity.x + horizontal_decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-            }
-            else
-            {
-                body.velocity = new Vector2(0f, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-            }
+           body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, body.velocity.y);
         }
         else
         {
-            body.velocity = new Vector2(horizontal * speed, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+            if (body.velocity.x > 0)
+            {
+                if (body.velocity.x > move_velocity)
+                {
+                    body.velocity = new Vector2((moving * Math.Abs(body.velocity.x)) - decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                }
+                else
+                {
+                    body.velocity = new Vector2((moving * move_velocity) - decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                }
+            }
+            else
+            {
+                if (body.velocity.x < -1 * move_velocity)
+                {
+                    body.velocity = new Vector2((moving * Math.Abs(body.velocity.x)) + decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                }
+                else
+                {
+                    body.velocity = new Vector2((moving * move_velocity) + decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                }
+            }
         }
-
-
 
         if (body.velocity.y < 1 && body.velocity.y > -1)
         {
@@ -237,13 +254,17 @@ public class Player_Movement : MonoBehaviour
 
     private void Flip()
     {
-        if ((is_facing_right && horizontal < 0f) || (!is_facing_right && horizontal > 0f))
+        if ((is_facing_right && moving < 0f) || (!is_facing_right && moving > 0f))
         {
             is_facing_right = !is_facing_right;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
+    }
+
+    private void Animate() {
+
     }
 
     private IEnumerator Dash()
@@ -262,17 +283,17 @@ public class Player_Movement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            body.velocity = new Vector2((transform.localScale.x > 0) ? dash_power : -1 * dash_power, dash_power);
-            transform.Rotate(0,0,(transform.localScale.x > 0) ? 45 : -45);
+            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, dash_power);
+            transform.Rotate(0,0,(moving > 0) ? 45 : -45);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            body.velocity = new Vector2((transform.localScale.x > 0) ? dash_power : -1 * dash_power, -1 * dash_power);
-            transform.Rotate(0,0,(transform.localScale.x > 0) ? -45 : 45);
+            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, -1 * dash_power);
+            transform.Rotate(0,0,(moving > 0) ? -45 : 45);
         }
         else
         {
-            body.velocity = new Vector2((transform.localScale.x > 0) ? dash_power : -1 * dash_power, 0f);
+            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, 0f);
         }
 
         yield return new WaitForSeconds(dash_time);
@@ -284,8 +305,8 @@ public class Player_Movement : MonoBehaviour
         }
         transform.rotation = original_rotation;
         body.gravityScale = original_gravity;
-        // body.velocity = new Vector2((transform.localScale.x > 0) ? speed : -1 * speed, 0f);
-        body.velocity = new Vector2(body.velocity.x, 0f);
+
+        body.velocity = new Vector2(moving * body.velocity.x, 0f);
 
         is_dashing = false;
         has_jumped = false;
@@ -325,7 +346,21 @@ public class Player_Movement : MonoBehaviour
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
 
-            grapple_speed_counter = grapple_speed_time;
+            switch (body.velocity.x)
+            {
+                case < 0:
+                moving = -1;
+                break;
+
+                case > 0:
+                moving = 1;
+                break;
+
+                default:
+                moving = 0;
+                break;
+
+            }
 
             is_grappling = false;
             has_jumped = false;
