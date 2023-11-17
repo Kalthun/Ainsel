@@ -41,6 +41,7 @@ public class Player_Movement : MonoBehaviour
     private bool is_dashing = false;
     private float dash_power = 24f;
     private float dash_time = 0.2f;
+    private float dash_time_counter;
     private float dash_cooldown = 0f;
 
     // grappling
@@ -73,7 +74,7 @@ public class Player_Movement : MonoBehaviour
         {
             case < 0:
                 moving = -1;
-                if (is_facing_right == true)
+                if (is_facing_right && !is_grappling)
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
                 }
@@ -81,7 +82,7 @@ public class Player_Movement : MonoBehaviour
 
             case > 0:
                 moving = 1;
-                if (is_facing_right == false)
+                if (!is_facing_right && !is_grappling)
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
                 }
@@ -93,12 +94,6 @@ public class Player_Movement : MonoBehaviour
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
-
-        // stop other execution while running CO-routine
-        if (is_dashing)
-        {
-            return;
-        }
 
         // stop other execution while running CO-routine
         if (is_grappling)
@@ -129,6 +124,18 @@ public class Player_Movement : MonoBehaviour
 
             grapple_release_time -= Time.deltaTime;
 
+            return;
+        }
+
+        if (Input.GetButton("Fire1") && can_grapple)
+        {
+            StartCoroutine(Grapple());
+        }
+
+        // stop other execution while running CO-routine
+        if (is_dashing)
+        {
+            dash_time_counter -= Time.deltaTime;
             return;
         }
 
@@ -188,11 +195,6 @@ public class Player_Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && can_dash)
         {
             StartCoroutine(Dash());
-        }
-
-        if (Input.GetButton("Fire1") && can_grapple)
-        {
-            StartCoroutine(Grapple());
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -290,6 +292,7 @@ public class Player_Movement : MonoBehaviour
     {
         can_dash = false;
         is_dashing = true;
+        dash_time_counter = dash_time;
         float original_gravity = body.gravityScale;
         Quaternion original_rotation = transform.rotation;
         body.gravityScale = 0f;
@@ -315,7 +318,7 @@ public class Player_Movement : MonoBehaviour
             body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, 0f);
         }
 
-        yield return new WaitForSeconds(dash_time);
+        yield return new WaitUntil(() => dash_time_counter == 0 || is_grappling);
 
         // ! make var
         for(int i = 0; i < 10; i++)
