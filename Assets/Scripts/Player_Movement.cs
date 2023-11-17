@@ -58,7 +58,9 @@ public class Player_Movement : MonoBehaviour
     private float grapple_release_time;
     private float grapple_cooldown = 0.1f;
     private float grapple_miss_cooldown = 0f;
-    private float test;
+    private float grapple_gravity_time = 0.5f;
+    private float grapple_gravity_counter;
+    private Vector2 stored_hookshot_speed;
 
     // ! replace later
     [SerializeField] private Rigidbody2D body;
@@ -98,6 +100,28 @@ public class Player_Movement : MonoBehaviour
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
+        if (!is_dashing || grapple_gravity_counter > 0)
+        {
+            // gravity
+            if (body.velocity.y < -1 || force_down)
+            {
+                body.gravityScale = down_gravity;
+
+                if (body.velocity.y < -1)
+                {
+                    force_down = false;
+                }
+            }
+            else if (body.velocity.y > 1)
+            {
+                body.gravityScale = up_gravity;
+            }
+            else
+            {
+                body.gravityScale = up_gravity / 2;
+            }
+        }
+
         // stop other execution while running CO-routine
         if (is_grappling)
         {
@@ -105,6 +129,16 @@ public class Player_Movement : MonoBehaviour
             switch (grapple_mode)
             {
                 case GrappleMode.HookShot:
+
+                if (body.velocity.x > stored_hookshot_speed.x)
+                {
+                    stored_hookshot_speed.x = body.velocity.x;
+                }
+
+                if (body.velocity.y > stored_hookshot_speed.y)
+                {
+                    stored_hookshot_speed.y = body.velocity.x;
+                }
 
                 if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
                 {
@@ -119,12 +153,18 @@ public class Player_Movement : MonoBehaviour
                     grapple_length += Input.GetAxis("Mouse ScrollWheel") * -10;
                 }
                 transform.GetComponent<SpringJoint2D>().distance = grapple_length;
+
+                if (grapple_gravity_counter < 0)
+                {
+                    body.gravityScale = (up_gravity + down_gravity) / 2;
+                }
                 break;
 
                 default:
                 break;
             }
 
+            grapple_gravity_counter -= Time.deltaTime;
             grapple_release_time -= Time.deltaTime;
 
             return;
@@ -140,25 +180,6 @@ public class Player_Movement : MonoBehaviour
         {
             dash_time_counter -= Time.deltaTime;
             return;
-        }
-
-        // gravity
-        if (body.velocity.y < -1 || force_down)
-        {
-            body.gravityScale = down_gravity;
-
-            if (body.velocity.y < -1)
-            {
-                force_down = false;
-            }
-        }
-        else if (body.velocity.y > 1)
-        {
-            body.gravityScale = up_gravity;
-        }
-        else
-        {
-            body.gravityScale = up_gravity / 2;
         }
 
         if (body.velocity.y < max_fall_speed && !Input.GetKey(KeyCode.S))
@@ -239,7 +260,7 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        Debug.Log(force_down);
+        Debug.Log(stored_hookshot_speed.x);
 
         if (is_dashing || is_grappling)
         {
@@ -385,6 +406,7 @@ public class Player_Movement : MonoBehaviour
             can_grapple = false;
             is_grappling = true;
             body.gravityScale = up_gravity;
+            stored_hookshot_speed = new Vector2(0f,0f);
 
             mouse_position = hit.point;
 
@@ -395,8 +417,11 @@ public class Player_Movement : MonoBehaviour
             transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
 
             grapple_release_time = grapple_hold_time;
+            grapple_gravity_counter = grapple_gravity_time;
 
             yield return new WaitUntil(() => Input.GetButton("Fire2") || grapple_release_time < 0);
+
+            grapple_gravity_counter = 0;
 
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
@@ -416,6 +441,11 @@ public class Player_Movement : MonoBehaviour
                 break;
 
             }
+
+            // if (grapple_mode == GrappleMode.HookShot)
+            // {
+            //     body.velocity = stored_hookshot_speed;
+            // }
 
             is_grappling = false;
             has_jumped = false;
