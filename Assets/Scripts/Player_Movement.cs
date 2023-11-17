@@ -130,12 +130,12 @@ public class Player_Movement : MonoBehaviour
             {
                 case GrappleMode.HookShot:
 
-                if (body.velocity.x > stored_hookshot_speed.x)
+                if (Math.Abs(body.velocity.x) > stored_hookshot_speed.x)
                 {
                     stored_hookshot_speed.x = body.velocity.x;
                 }
 
-                if (body.velocity.y > stored_hookshot_speed.y)
+                if (Math.Abs(body.velocity.y) > stored_hookshot_speed.y)
                 {
                     stored_hookshot_speed.y = body.velocity.x;
                 }
@@ -442,10 +442,10 @@ public class Player_Movement : MonoBehaviour
 
             }
 
-            // if (grapple_mode == GrappleMode.HookShot)
-            // {
-            //     body.velocity = stored_hookshot_speed;
-            // }
+            if (grapple_mode == GrappleMode.HookShot)
+            {
+                body.velocity = stored_hookshot_speed;
+            }
 
             is_grappling = false;
             has_jumped = false;
