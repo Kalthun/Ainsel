@@ -55,6 +55,7 @@ public class Player_Movement : MonoBehaviour
     private float grapple_release_time;
     private float grapple_cooldown = 0f;
     private float grapple_miss_cooldown = 0f;
+    private float test;
 
     // ! replace later
     [SerializeField] private Rigidbody2D body;
@@ -70,11 +71,13 @@ public class Player_Movement : MonoBehaviour
             case < 0:
                 decceleration = 0f;
                 moving = -1;
+                body.velocity = new Vector2(0f, body.velocity.y);
                 break;
 
             case > 0:
                 decceleration = 0f;
                 moving = 1;
+                body.velocity = new Vector2(0f, body.velocity.y);
                 break;
 
             default:
@@ -102,6 +105,7 @@ public class Player_Movement : MonoBehaviour
             switch (grapple_mode)
             {
                 case GrappleMode.HookShot:
+
                 if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
                 {
                     grapple_release_time = -1f;
