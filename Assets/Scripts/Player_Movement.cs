@@ -438,7 +438,7 @@ public class Player_Movement : MonoBehaviour
             {
                 if (hit.collider.tag.Equals("Hookpoint"))
                 {
-                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, above ? 0f : stored_hookshot_speed.y);
+                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, stored_hookshot_speed.y);
                 }
                 else
                 {
