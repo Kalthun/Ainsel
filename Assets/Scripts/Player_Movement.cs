@@ -66,28 +66,34 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
 
+        Flip();
+
+        Animate();
+
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case < 0:
                 decceleration = 0f;
                 moving = -1;
-                body.velocity = new Vector2(0f, body.velocity.y);
+                if (is_facing_right == true)
+                {
+                    body.velocity = new Vector2(0f, body.velocity.y);
+                }
                 break;
 
             case > 0:
                 decceleration = 0f;
                 moving = 1;
-                body.velocity = new Vector2(0f, body.velocity.y);
+                if (is_facing_right == false)
+                {
+                    body.velocity = new Vector2(0f, body.velocity.y);
+                }
                 break;
 
             default:
                 decceleration = standard_decceleration;
                 break;
         }
-
-        Flip();
-
-        Animate();
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
