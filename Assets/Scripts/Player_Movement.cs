@@ -22,6 +22,7 @@ public class Player_Movement : MonoBehaviour
     private float max_fall_speed = -15f;
     private float up_gravity = 5f;
     private float down_gravity = 6f;
+    private bool force_down = false;
 
 
     // jumping
@@ -143,9 +144,14 @@ public class Player_Movement : MonoBehaviour
         }
 
         // gravity
-        if (body.velocity.y < -1)
+        if (body.velocity.y < -1 || force_down)
         {
             body.gravityScale = down_gravity;
+
+            if (body.velocity.y < -1)
+            {
+                force_down = false;
+            }
         }
         else if (body.velocity.y > 1)
         {
@@ -213,7 +219,7 @@ public class Player_Movement : MonoBehaviour
         // letting go early
         if (Input.GetButtonUp("Jump") && body.velocity.y > 0f)
         {
-
+            force_down = true;
 
             coyote_counter = 0f;
         }
