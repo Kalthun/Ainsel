@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 
@@ -132,12 +133,12 @@ public class Player_Movement : MonoBehaviour
 
                 if (Math.Abs(body.velocity.x) > stored_hookshot_speed.x)
                 {
-                    stored_hookshot_speed.x = body.velocity.x;
+                    stored_hookshot_speed.x = Math.Abs(body.velocity.x);
                 }
 
                 if (Math.Abs(body.velocity.y) > stored_hookshot_speed.y)
                 {
-                    stored_hookshot_speed.y = body.velocity.x;
+                    stored_hookshot_speed.y = Math.Abs(body.velocity.y);
                 }
 
                 if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
@@ -260,7 +261,7 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        Debug.Log(stored_hookshot_speed.x);
+        // Debug.Log(stored_hookshot_speed.x);
 
         if (is_dashing || is_grappling)
         {
@@ -408,6 +409,9 @@ public class Player_Movement : MonoBehaviour
             body.gravityScale = up_gravity;
             stored_hookshot_speed = new Vector2(0f,0f);
 
+            bool above = transform.position.y > hit.point.y;
+            Debug.Log(above);
+
             mouse_position = hit.point;
 
             transform.GetComponent<SpringJoint2D>().enabled = true;
@@ -444,7 +448,7 @@ public class Player_Movement : MonoBehaviour
 
             if (grapple_mode == GrappleMode.HookShot)
             {
-                body.velocity = stored_hookshot_speed;
+                body.velocity = new Vector2(moving * stored_hookshot_speed.x, above ? -1 * stored_hookshot_speed.y : stored_hookshot_speed.y);
             }
 
             is_grappling = false;
