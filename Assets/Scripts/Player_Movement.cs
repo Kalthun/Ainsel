@@ -225,7 +225,7 @@ public class Player_Movement : MonoBehaviour
                     body.velocity = new Vector2((moving * move_velocity) - decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
                 }
             }
-            else
+            else if (body.velocity.x < 0)
             {
                 if (body.velocity.x < -1 * move_velocity)
                 {
@@ -235,6 +235,10 @@ public class Player_Movement : MonoBehaviour
                 {
                     body.velocity = new Vector2((moving * move_velocity) + decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
                 }
+            }
+            else
+            {
+                body.velocity = new Vector2(body.velocity.x, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
             }
         }
 
@@ -307,7 +311,7 @@ public class Player_Movement : MonoBehaviour
         transform.rotation = original_rotation;
         body.gravityScale = original_gravity;
 
-        body.velocity = new Vector2(moving * body.velocity.x, 0f);
+        body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), 0f);
 
         is_dashing = false;
         has_jumped = false;
