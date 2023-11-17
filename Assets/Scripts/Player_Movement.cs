@@ -365,6 +365,7 @@ public class Player_Movement : MonoBehaviour
 
             can_grapple = false;
             is_grappling = true;
+            body.gravityScale = down_gravity;
 
             mouse_position = hit.point;
 
