@@ -131,7 +131,7 @@ public class Player_Movement : MonoBehaviour
             {
                 case GrappleMode.HookShot:
 
-                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 2 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
+                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
                 {
                     grapple_release_time = -1f;
                 }
@@ -399,7 +399,6 @@ public class Player_Movement : MonoBehaviour
             body.gravityScale = up_gravity;
 
             bool above = transform.position.y > hit.point.y;
-            Debug.Log(above);
 
             mouse_position = hit.point;
 
@@ -437,7 +436,15 @@ public class Player_Movement : MonoBehaviour
 
             if (grapple_mode == GrappleMode.HookShot)
             {
-                body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, above ? 0f : stored_hookshot_speed.y);
+                if (hit.collider.tag.Equals("Hookpoint"))
+                {
+                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, above ? 0f : stored_hookshot_speed.y);
+                }
+                else
+                {
+                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, 0f);
+                }
+
             }
 
             is_grappling = false;

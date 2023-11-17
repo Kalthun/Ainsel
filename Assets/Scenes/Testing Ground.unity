@@ -314,7 +314,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 21.02185
+  orthographic size: 9.27054
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 1021363014}
   m_Layer: 7
   m_Name: Hookpoint
-  m_TagString: Untagged
+  m_TagString: Hookpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
