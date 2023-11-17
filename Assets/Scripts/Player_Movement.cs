@@ -437,7 +437,7 @@ public class Player_Movement : MonoBehaviour
 
             if (grapple_mode == GrappleMode.HookShot)
             {
-                body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, above ? -1 * stored_hookshot_speed.y : stored_hookshot_speed.y);
+                body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, above ? -1 * stored_hookshot_speed.y : 0f);
             }
 
             is_grappling = false;
