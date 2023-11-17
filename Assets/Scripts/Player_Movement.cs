@@ -61,7 +61,7 @@ public class Player_Movement : MonoBehaviour
     private float grapple_miss_cooldown = 0f;
     private float grapple_gravity_time = 0.5f;
     private float grapple_gravity_counter;
-    private Vector2 stored_hookshot_speed;
+    private Vector2 stored_hookshot_speed = new Vector2(20f, 20f);
 
     // ! replace later
     [SerializeField] private Rigidbody2D body;
@@ -131,17 +131,7 @@ public class Player_Movement : MonoBehaviour
             {
                 case GrappleMode.HookShot:
 
-                if (Math.Abs(body.velocity.x) > stored_hookshot_speed.x)
-                {
-                    stored_hookshot_speed.x = Math.Abs(body.velocity.x);
-                }
-
-                if (Math.Abs(body.velocity.y) > stored_hookshot_speed.y)
-                {
-                    stored_hookshot_speed.y = Math.Abs(body.velocity.y);
-                }
-
-                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
+                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 2 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
                 {
                     grapple_release_time = -1f;
                 }
@@ -407,7 +397,6 @@ public class Player_Movement : MonoBehaviour
             can_grapple = false;
             is_grappling = true;
             body.gravityScale = up_gravity;
-            stored_hookshot_speed = new Vector2(0f,0f);
 
             bool above = transform.position.y > hit.point.y;
             Debug.Log(above);
@@ -448,7 +437,7 @@ public class Player_Movement : MonoBehaviour
 
             if (grapple_mode == GrappleMode.HookShot)
             {
-                body.velocity = new Vector2(moving * stored_hookshot_speed.x, above ? -1 * stored_hookshot_speed.y : stored_hookshot_speed.y);
+                body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, above ? -1 * stored_hookshot_speed.y : stored_hookshot_speed.y);
             }
 
             is_grappling = false;
