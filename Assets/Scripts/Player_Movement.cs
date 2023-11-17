@@ -14,12 +14,14 @@ public class Player_Movement : MonoBehaviour
 
     // generic movement
     private Vector2 mouse_position;
-    private float moving;
+    private float horizontal_direction;
     private bool is_facing_right = true;
     private float move_velocity = 10f;
     private float decceleration = 1;
     private float max_fall_speed = -15f;
-    private float gravity = 4f;
+    private float up_gravity = 4f;
+    private float down_gravity = 5f;
+
 
     // jumping
     private float normal_jump_power = 20f;
@@ -73,7 +75,7 @@ public class Player_Movement : MonoBehaviour
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case < 0:
-                moving = -1;
+                horizontal_direction = -1;
                 if (is_facing_right && !is_grappling)
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
@@ -81,7 +83,7 @@ public class Player_Movement : MonoBehaviour
                 break;
 
             case > 0:
-                moving = 1;
+                horizontal_direction = 1;
                 if (!is_facing_right && !is_grappling)
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
@@ -139,6 +141,20 @@ public class Player_Movement : MonoBehaviour
             return;
         }
 
+        // gravity
+        if (body.velocity.y < -1)
+        {
+            body.gravityScale = down_gravity;
+        }
+        else if (body.velocity.y > 1)
+        {
+            body.gravityScale = up_gravity;
+        }
+        else
+        {
+            body.gravityScale = up_gravity / 2;
+        }
+
         // jump reset
         if (IsGrounded() && !Input.GetButton("Jump"))
         {
@@ -187,7 +203,7 @@ public class Player_Movement : MonoBehaviour
         // letting go early
         if (Input.GetButtonUp("Jump") && body.velocity.y > 0f)
         {
-            body.velocity = new Vector2(body.velocity.x, body.velocity.y * 0.1f);
+            body.velocity = new Vector2(body.velocity.x, body.velocity.y);
 
             coyote_counter = 0f;
         }
@@ -233,22 +249,22 @@ public class Player_Movement : MonoBehaviour
                 {
                     if (body.velocity.x > move_velocity)
                     {
-                        body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                        body.velocity = new Vector2(horizontal_direction * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
                     }
                     else
                     {
-                        body.velocity = new Vector2(moving * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                        body.velocity = new Vector2(horizontal_direction * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
                     }
                 }
                 else if (body.velocity.x < 0)
                 {
                     if (body.velocity.x < -1 * move_velocity)
                     {
-                        body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                        body.velocity = new Vector2(horizontal_direction * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
                     }
                     else
                     {
-                    body.velocity = new Vector2(moving * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                    body.velocity = new Vector2(horizontal_direction * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
                     }
                 }
                 else
@@ -256,15 +272,6 @@ public class Player_Movement : MonoBehaviour
                     body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
                 }
             }
-        }
-
-        if (body.velocity.y < 1 && body.velocity.y > -1)
-        {
-            body.gravityScale = gravity / 2; // ! note
-        }
-        else
-        {
-            body.gravityScale = gravity;
         }
 
     }
@@ -275,7 +282,7 @@ public class Player_Movement : MonoBehaviour
 
     private void Flip()
     {
-        if ((is_facing_right && moving < 0f) || (!is_facing_right && moving > 0f))
+        if ((is_facing_right && horizontal_direction < 0f) || (!is_facing_right && horizontal_direction > 0f))
         {
             is_facing_right = !is_facing_right;
             Vector3 localScale = transform.localScale;
@@ -305,17 +312,17 @@ public class Player_Movement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, dash_power);
-            transform.Rotate(0,0,(moving > 0) ? 45 : -45);
+            body.velocity = new Vector2((horizontal_direction > 0) ? dash_power : -1 * dash_power, dash_power);
+            transform.Rotate(0,0,(horizontal_direction > 0) ? 45 : -45);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, -1 * dash_power);
-            transform.Rotate(0,0,(moving > 0) ? -45 : 45);
+            body.velocity = new Vector2((horizontal_direction > 0) ? dash_power : -1 * dash_power, -1 * dash_power);
+            transform.Rotate(0,0,(horizontal_direction > 0) ? -45 : 45);
         }
         else
         {
-            body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, 0f);
+            body.velocity = new Vector2((horizontal_direction > 0) ? dash_power : -1 * dash_power, 0f);
         }
 
         yield return new WaitUntil(() => dash_time_counter < 0 || is_grappling);
@@ -330,11 +337,11 @@ public class Player_Movement : MonoBehaviour
 
         if (is_grappling)
         {
-            body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), 0f);
+            body.velocity = new Vector2(horizontal_direction * Math.Abs(body.velocity.x), 0f);
         }
         else
         {
-            body.velocity = new Vector2(moving * move_velocity, 0f);
+            body.velocity = new Vector2(horizontal_direction * move_velocity, 0f);
         }
 
         is_dashing = false;
@@ -358,7 +365,6 @@ public class Player_Movement : MonoBehaviour
 
             can_grapple = false;
             is_grappling = true;
-            body.gravityScale = gravity;
 
             mouse_position = hit.point;
 
@@ -378,15 +384,15 @@ public class Player_Movement : MonoBehaviour
             switch (body.velocity.x)
             {
                 case < 0:
-                moving = -1;
+                horizontal_direction = -1;
                 break;
 
                 case > 0:
-                moving = 1;
+                horizontal_direction = 1;
                 break;
 
                 default:
-                moving = 0;
+                horizontal_direction = 0;
                 break;
 
             }
