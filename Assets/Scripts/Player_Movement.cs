@@ -238,7 +238,7 @@ public class Player_Movement : MonoBehaviour
             }
             else
             {
-                body.velocity = new Vector2(body.velocity.x, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
             }
         }
 
