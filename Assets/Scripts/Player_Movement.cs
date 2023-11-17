@@ -17,8 +17,7 @@ public class Player_Movement : MonoBehaviour
     private float moving;
     private bool is_facing_right = true;
     private float move_velocity = 10f;
-    private float standard_decceleration = 1f;
-    private float decceleration = 1f;
+    private float decceleration = 2;
     private float max_fall_speed = -15f;
     private float gravity = 4f;
 
@@ -73,7 +72,6 @@ public class Player_Movement : MonoBehaviour
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case < 0:
-                decceleration = 0f;
                 moving = -1;
                 if (is_facing_right == true)
                 {
@@ -82,7 +80,6 @@ public class Player_Movement : MonoBehaviour
                 break;
 
             case > 0:
-                decceleration = 0f;
                 moving = 1;
                 if (is_facing_right == false)
                 {
@@ -91,7 +88,6 @@ public class Player_Movement : MonoBehaviour
                 break;
 
             default:
-                decceleration = standard_decceleration;
                 break;
         }
 
@@ -224,31 +220,39 @@ public class Player_Movement : MonoBehaviour
         }
         else
         {
-            if (body.velocity.x > 0)
+            if (Input.GetAxisRaw("Horizontal") == 0)
             {
-                if (body.velocity.x > move_velocity)
-                {
-                    body.velocity = new Vector2((moving * Math.Abs(body.velocity.x)) - decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-                }
-                else
-                {
-                    body.velocity = new Vector2((moving * move_velocity) - decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-                }
-            }
-            else if (body.velocity.x < 0)
-            {
-                if (body.velocity.x < -1 * move_velocity)
-                {
-                    body.velocity = new Vector2((moving * Math.Abs(body.velocity.x)) + decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-                }
-                else
-                {
-                    body.velocity = new Vector2((moving * move_velocity) + decceleration, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
-                }
+                body.velocity = new Vector2(body.velocity.x + ((body.velocity.x > 0) ? -1 * decceleration : decceleration), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                Debug.Log(body.velocity.x);
             }
             else
             {
-                body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                if (body.velocity.x > 0)
+                {
+                    if (body.velocity.x > move_velocity)
+                    {
+                        body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                    }
+                    else
+                    {
+                        body.velocity = new Vector2(moving * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                    }
+                }
+                else if (body.velocity.x < 0)
+                {
+                    if (body.velocity.x < -1 * move_velocity)
+                    {
+                        body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                    }
+                    else
+                    {
+                    body.velocity = new Vector2(moving * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                    }
+                }
+                else
+                {
+                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, ((body.velocity.y < max_fall_speed) && !Input.GetKey(KeyCode.S)) ? max_fall_speed : body.velocity.y);
+                }
             }
         }
 
