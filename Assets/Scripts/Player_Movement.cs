@@ -17,7 +17,8 @@ public class Player_Movement : MonoBehaviour
     private float moving;
     private bool is_facing_right = true;
     private float move_velocity = 10f;
-    private float decceleration = 0.5f;
+    private float standard_decceleration = 1f;
+    private float decceleration = 1f;
     private float max_fall_speed = -15f;
     private float gravity = 4f;
 
@@ -77,7 +78,7 @@ public class Player_Movement : MonoBehaviour
                 break;
 
             default:
-                decceleration = 0.5f;
+                decceleration = standard_decceleration;
                 break;
         }
 
