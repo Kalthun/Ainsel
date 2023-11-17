@@ -17,7 +17,7 @@ public class Player_Movement : MonoBehaviour
     private float moving;
     private bool is_facing_right = true;
     private float move_velocity = 10f;
-    private float decceleration = 2;
+    private float decceleration = 1;
     private float max_fall_speed = -15f;
     private float gravity = 4f;
 
@@ -328,8 +328,14 @@ public class Player_Movement : MonoBehaviour
         transform.rotation = original_rotation;
         body.gravityScale = original_gravity;
 
-        // body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), 0f);
-        body.velocity = new Vector2(moving * move_velocity, 0f);
+        if (is_grappling)
+        {
+            body.velocity = new Vector2(moving * Math.Abs(body.velocity.x), 0f);
+        }
+        else
+        {
+            body.velocity = new Vector2(moving * move_velocity, 0f);
+        }
 
         is_dashing = false;
         has_jumped = false;
