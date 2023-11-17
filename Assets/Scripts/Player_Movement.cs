@@ -61,7 +61,7 @@ public class Player_Movement : MonoBehaviour
     private float grapple_miss_cooldown = 0f;
     private float grapple_gravity_time = 0.5f;
     private float grapple_gravity_counter;
-    private Vector2 stored_hookshot_speed = new Vector2(20f, 30f);
+    private Vector2 stored_hookshot_speed = new Vector2(20f, 20f);
 
     // ! replace later
     [SerializeField] private Rigidbody2D body;
@@ -185,7 +185,7 @@ public class Player_Movement : MonoBehaviour
         // jump reset
         if (IsGrounded() && !Input.GetButton("Jump"))
         {
-            has_jumped = double_jump = false;
+            has_jumped = double_jump = force_down = false;
         }
 
         // coyote_time
