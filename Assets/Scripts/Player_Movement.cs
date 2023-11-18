@@ -252,8 +252,6 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        // Debug.Log(stored_hookshot_speed.x);
-
         if (is_dashing || is_grappling)
         {
             return;
