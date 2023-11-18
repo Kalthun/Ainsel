@@ -14,14 +14,15 @@ public class Player_Movement : MonoBehaviour
 {
 
     // generic movement
-    private Vector2 mouse_position;
     private float moving;
     private bool is_facing_right = true;
+
     private float move_velocity = 10f;
     private float decceleration = 1f;
-    private float max_fall_speed = -15f;
+
     private float up_gravity = 4f;
     private float down_gravity = 8f;
+    private float max_fall_speed = -15f;
     private bool force_down = false;
 
 
@@ -34,11 +35,11 @@ public class Player_Movement : MonoBehaviour
 
     // coyote time
     private float coyote_time = 0.2f;
-    private float coyote_counter = 0f;
+    private float coyote_time_counter = 0f;
 
     // jump buffer
     private float jump_buffer_time = 0.2f;
-    private float jump_buffer_counter = 0f;
+    private float jump_buffer_time_counter = 0f;
 
     // dashing
     private bool can_dash = true;
@@ -49,21 +50,22 @@ public class Player_Movement : MonoBehaviour
     private float dash_cooldown = 0.1f;
 
     // grappling
+    private Vector2 mouse_position;
     RaycastHit2D hit;
     private GrappleMode grapple_mode = GrappleMode.SwingShot;
     private bool can_grapple = true;
     private bool is_grappling = false;
     private float grapple_range = 10f;
-    private float grapple_length = 2.5f;
+    private float grapple_length = 2.5f; // ? could make it equal to distance bewteen player and hit
     private float grapple_hold_time = 3.0f;
-    private float grapple_release_time;
+    private float grapple_hold_time_counter;
     private float grapple_cooldown = 0.1f;
     private float grapple_miss_cooldown = 0f;
     private float grapple_gravity_time = 0.5f;
-    private float grapple_gravity_counter;
-    private Vector2 stored_hookshot_speed = new Vector2(20f, 20f);
+    private float grapple_gravity_time_counter;
+    private Vector2 grapple_hookshot_speed = new Vector2(20f, 20f);
 
-    // ! replace later
+    // ! replace later with values
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private Transform ground_check;
     [SerializeField] private LayerMask ground_layer;
@@ -101,7 +103,7 @@ public class Player_Movement : MonoBehaviour
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
-        if (!is_dashing || grapple_gravity_counter > 0)
+        if (!is_dashing || grapple_gravity_time_counter > 0)
         {
             // gravity
             if (body.velocity.y < -1 || force_down)
@@ -131,9 +133,9 @@ public class Player_Movement : MonoBehaviour
             {
                 case GrappleMode.HookShot:
 
-                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_release_time < grapple_hold_time - 0.33f) // buffer for hookshot
+                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_hold_time_counter < grapple_hold_time - 0.33f) // buffer for hookshot
                 {
-                    grapple_release_time = -1f;
+                    grapple_hold_time_counter = -1f;
                 }
                 transform.GetComponent<SpringJoint2D>().distance = 0f;
                 break;
@@ -145,7 +147,7 @@ public class Player_Movement : MonoBehaviour
                 }
                 transform.GetComponent<SpringJoint2D>().distance = grapple_length;
 
-                if (grapple_gravity_counter < 0)
+                if (grapple_gravity_time_counter < 0)
                 {
                     body.gravityScale = (up_gravity + down_gravity) / 2;
                 }
@@ -155,8 +157,8 @@ public class Player_Movement : MonoBehaviour
                 break;
             }
 
-            grapple_gravity_counter -= Time.deltaTime;
-            grapple_release_time -= Time.deltaTime;
+            grapple_gravity_time_counter -= Time.deltaTime;
+            grapple_hold_time_counter -= Time.deltaTime;
 
             return;
         }
@@ -191,27 +193,27 @@ public class Player_Movement : MonoBehaviour
         // coyote_time
         if (IsGrounded())
         {
-            coyote_counter = coyote_time;
+            coyote_time_counter = coyote_time;
         }
         else
         {
-            coyote_counter -= Time.deltaTime;
+            coyote_time_counter -= Time.deltaTime;
         }
 
         // jump_buffer
         if (Input.GetButtonDown("Jump"))
         {
-            jump_buffer_counter = jump_buffer_time;
+            jump_buffer_time_counter = jump_buffer_time;
         }
         else
         {
-            jump_buffer_counter -= Time.deltaTime;
+            jump_buffer_time_counter -= Time.deltaTime;
         }
 
         // jump logic
-        if ((jump_buffer_counter > 0f && coyote_counter > 0f) || (Input.GetButtonDown("Jump") && double_jump) || (Input.GetButtonDown("Jump") && !has_jumped))
+        if ((jump_buffer_time_counter > 0f && coyote_time_counter > 0f) || (Input.GetButtonDown("Jump") && double_jump) || (Input.GetButtonDown("Jump") && !has_jumped))
         {
-            if (coyote_counter > 0 || double_jump)
+            if (coyote_time_counter > 0 || double_jump)
             {
                 body.velocity = new Vector2(body.velocity.x, double_jump ? double_jump_power : normal_jump_power);
 
@@ -224,7 +226,7 @@ public class Player_Movement : MonoBehaviour
 
             has_jumped = true;
 
-            jump_buffer_counter = 0f;
+            jump_buffer_time_counter = 0f;
         }
 
         // letting go early
@@ -232,7 +234,7 @@ public class Player_Movement : MonoBehaviour
         {
             force_down = true;
 
-            coyote_counter = 0f;
+            coyote_time_counter = 0f;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && can_dash)
@@ -410,12 +412,12 @@ public class Player_Movement : MonoBehaviour
             transform.GetComponent<LineRenderer>().enabled = true;
             transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position);
 
-            grapple_release_time = grapple_hold_time;
-            grapple_gravity_counter = grapple_gravity_time;
+            grapple_hold_time_counter = grapple_hold_time;
+            grapple_gravity_time_counter = grapple_gravity_time;
 
-            yield return new WaitUntil(() => Input.GetButton("Fire2") || grapple_release_time < 0);
+            yield return new WaitUntil(() => Input.GetButton("Fire2") || grapple_hold_time_counter < 0);
 
-            grapple_gravity_counter = 0;
+            grapple_gravity_time_counter = 0;
 
             transform.GetComponent<SpringJoint2D>().enabled = false;
             transform.GetComponent<LineRenderer>().enabled = false;
@@ -440,11 +442,11 @@ public class Player_Movement : MonoBehaviour
             {
                 if (hit.collider.tag.Equals("Hookpoint"))
                 {
-                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, stored_hookshot_speed.y);
+                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * grapple_hookshot_speed.x, grapple_hookshot_speed.y);
                 }
                 else
                 {
-                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * stored_hookshot_speed.x, 0f);
+                    body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * grapple_hookshot_speed.x, 0f);
                 }
 
             }
