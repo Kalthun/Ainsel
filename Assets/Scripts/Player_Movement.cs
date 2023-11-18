@@ -380,7 +380,7 @@ public class Player_Movement : MonoBehaviour
         has_jumped = false;
 
         yield return new WaitForSeconds(dash_cooldown);
-        
+
         can_dash = true;
     }
 
