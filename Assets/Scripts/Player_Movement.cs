@@ -318,12 +318,13 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
-    private bool IsGrounded() {
-        return Physics2D.OverlapCircle(ground_check.position, 0.2f, ground_layer);
-    }
-
     private void Animate() {
 
+    }
+
+
+    private bool IsGrounded() {
+        return Physics2D.OverlapCircle(ground_check.position, 0.2f, ground_layer);
     }
 
     private IEnumerator Dash()
@@ -379,6 +380,7 @@ public class Player_Movement : MonoBehaviour
         has_jumped = false;
 
         yield return new WaitForSeconds(dash_cooldown);
+        
         can_dash = true;
     }
 
