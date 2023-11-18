@@ -72,10 +72,6 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
 
-        Flip();
-
-        Animate();
-
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case < 0:
@@ -97,6 +93,10 @@ public class Player_Movement : MonoBehaviour
             default:
                 break;
         }
+
+        Flip();
+
+        Animate();
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
@@ -308,10 +308,6 @@ public class Player_Movement : MonoBehaviour
 
     }
 
-    private bool IsGrounded() {
-        return Physics2D.OverlapCircle(ground_check.position, 0.2f, ground_layer);
-    }
-
     private void Flip()
     {
         if ((is_facing_right && moving < 0f) || (!is_facing_right && moving > 0f))
@@ -323,12 +319,17 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
+    private bool IsGrounded() {
+        return Physics2D.OverlapCircle(ground_check.position, 0.2f, ground_layer);
+    }
+
     private void Animate() {
 
     }
 
     private IEnumerator Dash()
     {
+
         can_dash = false;
         is_dashing = true;
         dash_time_counter = dash_time;
@@ -385,8 +386,9 @@ public class Player_Movement : MonoBehaviour
     private IEnumerator Grapple()
     {
 
-        mouse_position = Input.mousePosition;
-        mouse_position = Camera.main.ScreenToWorldPoint(mouse_position);
+        can_grapple = false;
+
+        mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         int layerMask = ~LayerMask.GetMask("Player");
         hit = Physics2D.Raycast(transform.position, mouse_position - (Vector2)transform.position, grapple_range, layerMask);
@@ -455,8 +457,6 @@ public class Player_Movement : MonoBehaviour
             can_grapple = true;
 
         } else {
-
-            can_grapple = false;
 
             transform.GetComponent<LineRenderer>().enabled = true;
 
