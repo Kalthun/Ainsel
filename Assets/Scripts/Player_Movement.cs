@@ -69,6 +69,14 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private Transform ground_check;
     [SerializeField] private LayerMask ground_layer;
 
+
+    //! Animator
+    Animator animator;
+
+    void Start(){
+       animator = GetComponentInChildren<Animator>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -107,6 +115,7 @@ public class Player_Movement : MonoBehaviour
             // gravity
             if (body.velocity.y < -1 || force_down)
             {
+                animator.SetTrigger("Fall");
                 body.gravityScale = down_gravity;
 
                 if (body.velocity.y < -1)
@@ -121,6 +130,7 @@ public class Player_Movement : MonoBehaviour
             else
             {
                 body.gravityScale = up_gravity / 2;
+                animator.SetTrigger("Apex");
             }
         }
 
@@ -193,9 +203,11 @@ public class Player_Movement : MonoBehaviour
         if (IsGrounded())
         {
             coyote_time_counter = coyote_time;
+            animator.SetBool("Grounded", true);
         }
         else
         {
+            animator.SetBool("Grounded", false);
             coyote_time_counter -= Time.deltaTime;
         }
 
@@ -212,6 +224,7 @@ public class Player_Movement : MonoBehaviour
         // jump logic
         if ((jump_buffer_time_counter > 0f && coyote_time_counter > 0f) || (Input.GetButtonDown("Jump") && double_jump) || (Input.GetButtonDown("Jump") && !has_jumped))
         {
+            animator.SetTrigger("Jump");
             if (coyote_time_counter > 0 || double_jump)
             {
                 body.velocity = new Vector2(body.velocity.x, double_jump ? double_jump_power : normal_jump_power);
@@ -232,7 +245,6 @@ public class Player_Movement : MonoBehaviour
         if (Input.GetButtonUp("Jump") && body.velocity.y > -1f)
         {
             force_down = true;
-
             coyote_time_counter = 0f;
         }
 
@@ -259,7 +271,11 @@ public class Player_Movement : MonoBehaviour
 
         if (IsGrounded())
         {
-           body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, body.velocity.y);
+          body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, body.velocity.y);
+          if(body.velocity != Vector2.zero)
+            animator.SetBool("Walk", true);
+          else
+            animator.SetBool("Walk", false);
         }
         else
         {
@@ -336,7 +352,7 @@ public class Player_Movement : MonoBehaviour
         float original_gravity = body.gravityScale;
         Quaternion original_rotation = transform.rotation;
         body.gravityScale = 0f;
-
+        animator.SetTrigger("Dash");
         // ! make var
         for(int i = 0; i < 10; i++)
         {
@@ -359,6 +375,7 @@ public class Player_Movement : MonoBehaviour
         }
 
         yield return new WaitUntil(() => dash_time_counter < 0 || is_grappling);
+        animator.SetTrigger("Dash_Exit");
 
         // ! make var
         for(int i = 0; i < 10; i++)
