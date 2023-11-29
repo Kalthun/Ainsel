@@ -351,13 +351,14 @@ public class Player_Movement : MonoBehaviour
     private IEnumerator Dash()
     {
 
+        animator.SetTrigger("Dash");
+
         can_dash = false;
         is_dashing = true;
         dash_time_counter = dash_time;
         float original_gravity = body.gravityScale;
         Quaternion original_rotation = transform.rotation;
         body.gravityScale = 0f;
-        animator.SetTrigger("Dash");
         // ! make var
         // for(int i = 0; i < 10; i++)
         // {
@@ -380,6 +381,7 @@ public class Player_Movement : MonoBehaviour
         }
 
         yield return new WaitUntil(() => dash_time_counter < 0 || is_grappling);
+        
         animator.SetTrigger("Dash_Exit");
 
         // ! make var
