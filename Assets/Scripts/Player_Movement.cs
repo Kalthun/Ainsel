@@ -24,7 +24,6 @@ public class Player_Movement : MonoBehaviour
     private float max_fall_speed = -15f;
     private bool force_down = false;
 
-
     // jumping
     private float normal_jump_power = 20f;
     private float falling_jump_power = 15f;
@@ -43,8 +42,8 @@ public class Player_Movement : MonoBehaviour
     // dashing
     private bool can_dash = true;
     private bool is_dashing = false;
-    private float dash_power = 24f;
-    private float dash_time = 0.2f;
+    private float dash_power = 20f;
+    private float dash_time = 0.25f;
     private float dash_time_counter;
     private float dash_cooldown = 0.1f;
 
@@ -113,7 +112,7 @@ public class Player_Movement : MonoBehaviour
         if (!is_dashing || grapple_gravity_time_counter > 0)
         {
             // gravity
-            if (body.velocity.y < -1 || force_down)
+            if (body.velocity.y < -1 || (force_down && !IsGrounded()))
             {
                 animator.SetTrigger("Fall");
                 body.gravityScale = down_gravity;
@@ -224,7 +223,6 @@ public class Player_Movement : MonoBehaviour
         // jump logic
         if ((jump_buffer_time_counter > 0f && coyote_time_counter > 0f) || (Input.GetButtonDown("Jump") && double_jump) || (Input.GetButtonDown("Jump") && !has_jumped))
         {
-            animator.SetTrigger("Jump");
             if (coyote_time_counter > 0 || double_jump)
             {
                 body.velocity = new Vector2(body.velocity.x, double_jump ? double_jump_power : normal_jump_power);
@@ -235,6 +233,8 @@ public class Player_Movement : MonoBehaviour
             {
                 body.velocity = new Vector2(body.velocity.x, falling_jump_power);
             }
+
+            animator.SetTrigger("Jump");
 
             has_jumped = true;
 
@@ -359,10 +359,10 @@ public class Player_Movement : MonoBehaviour
         body.gravityScale = 0f;
         animator.SetTrigger("Dash");
         // ! make var
-        for(int i = 0; i < 10; i++)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - i * 0.01f, transform.localScale.z);
-        }
+        // for(int i = 0; i < 10; i++)
+        // {
+        //     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - i * 0.01f, transform.localScale.z);
+        // }
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -383,10 +383,10 @@ public class Player_Movement : MonoBehaviour
         animator.SetTrigger("Dash_Exit");
 
         // ! make var
-        for(int i = 0; i < 10; i++)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + i * 0.01f, transform.localScale.z);
-        }
+        // for(int i = 0; i < 10; i++)
+        // {
+        //     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + i * 0.01f, transform.localScale.z);
+        // }
         transform.rotation = original_rotation;
 
         if (is_grappling)
