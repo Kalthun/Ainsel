@@ -130,7 +130,7 @@ public class Player_Movement : MonoBehaviour
             else
             {
                 body.gravityScale = up_gravity / 2;
-                animator.SetTrigger("Apex");
+                if (!IsGrounded()) animator.SetTrigger("Apex");
             }
         }
 
@@ -272,10 +272,6 @@ public class Player_Movement : MonoBehaviour
         if (IsGrounded())
         {
           body.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * move_velocity, body.velocity.y);
-          if(body.velocity != Vector2.zero)
-            animator.SetBool("Walk", true);
-          else
-            animator.SetBool("Walk", false);
         }
         else
         {
@@ -335,6 +331,15 @@ public class Player_Movement : MonoBehaviour
     }
 
     private void Animate() {
+
+        if (body.velocity.x != 0)
+        {
+            animator.SetBool("Walk", true);
+        }
+        else
+        {
+            animator.SetBool("Walk", false);
+        }
 
     }
 
