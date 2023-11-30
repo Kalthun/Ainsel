@@ -912,6 +912,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4406833124749607614, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: m_Size.x
+      value: 0.83640015
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406833124749607614, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: m_Size.y
+      value: 1.5975219
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406833124749607614, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.0032253712
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406833124749607614, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.28353828
+      objectReference: {fileID: 0}
     - target: {fileID: 8621852351934252693, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -953,7 +969,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1780589436538389699, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}

@@ -366,11 +366,6 @@ public class Player_Movement : MonoBehaviour
         float original_gravity = body.gravityScale;
         Quaternion original_rotation = transform.rotation;
         body.gravityScale = 0f;
-        // ! make var
-        // for(int i = 0; i < 10; i++)
-        // {
-        //     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y - i * 0.01f, transform.localScale.z);
-        // }
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -393,15 +388,10 @@ public class Player_Movement : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
+        transform.rotation = original_rotation;
+
         animator.ResetTrigger("Dash_Exit");
         animator.SetBool("Dashing", false);
-
-        // ! make var
-        // for(int i = 0; i < 10; i++)
-        // {
-        //     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + i * 0.01f, transform.localScale.z);
-        // }
-        transform.rotation = original_rotation;
 
         if (is_grappling)
         {
