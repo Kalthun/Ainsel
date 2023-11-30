@@ -42,7 +42,7 @@ public class Player_Movement : MonoBehaviour
     // dashing
     private bool can_dash = true;
     private bool is_dashing = false;
-    private float dash_power = 20f;
+    private float dash_power =20f;
     private float dash_time = 0.25f;
     private float dash_time_counter;
     private float dash_cooldown = 0.1f;
@@ -137,6 +137,9 @@ public class Player_Movement : MonoBehaviour
         if (is_grappling)
         {
 
+            animator.SetBool("Grounded", false);
+            animator.SetTrigger("Fall");
+
             switch (grapple_mode)
             {
                 case GrappleMode.HookShot:
@@ -196,6 +199,8 @@ public class Player_Movement : MonoBehaviour
         if (IsGrounded() && !Input.GetButton("Jump"))
         {
             has_jumped = double_jump = force_down = false;
+
+            animator.ResetTrigger("Apex");
         }
 
         // coyote_time
@@ -225,6 +230,9 @@ public class Player_Movement : MonoBehaviour
         {
             if (coyote_time_counter > 0 || double_jump)
             {
+
+                if (!double_jump) animator.SetTrigger("Jump");
+
                 body.velocity = new Vector2(body.velocity.x, double_jump ? double_jump_power : normal_jump_power);
 
                 double_jump = !double_jump;
@@ -233,8 +241,6 @@ public class Player_Movement : MonoBehaviour
             {
                 body.velocity = new Vector2(body.velocity.x, falling_jump_power);
             }
-
-            animator.SetTrigger("Jump");
 
             has_jumped = true;
 
@@ -332,7 +338,7 @@ public class Player_Movement : MonoBehaviour
 
     private void Animate() {
 
-        if (body.velocity.x != 0)
+        if (body.velocity.x != 0 && IsGrounded())
         {
             animator.SetBool("Walk", true);
         }
@@ -351,6 +357,7 @@ public class Player_Movement : MonoBehaviour
     private IEnumerator Dash()
     {
 
+        animator.SetBool("Dashing", true);
         animator.SetTrigger("Dash");
 
         can_dash = false;
@@ -381,8 +388,13 @@ public class Player_Movement : MonoBehaviour
         }
 
         yield return new WaitUntil(() => dash_time_counter < 0 || is_grappling);
-        
+
         animator.SetTrigger("Dash_Exit");
+
+        yield return new WaitForSeconds(0.1f);
+
+        animator.ResetTrigger("Dash_Exit");
+        animator.SetBool("Dashing", false);
 
         // ! make var
         // for(int i = 0; i < 10; i++)
