@@ -144,7 +144,7 @@ public class Player_Movement : MonoBehaviour
             {
                 case GrappleMode.HookShot:
 
-                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1 || grapple_hold_time_counter < grapple_hold_time - 0.33f) // buffer for hookshot
+                if (Vector2.Distance(hit.point, (Vector2)transform.position) < 1.5 || grapple_hold_time_counter < grapple_hold_time - 0.33f) // buffer for hookshot
                 {
                     grapple_hold_time_counter = -1f;
                 }
