@@ -49,6 +49,8 @@ public class Manager : MonoBehaviour
     {
         while(Title_Text.transform.position.y > 0) Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - 0.5f);
 
+        start_text.GetComponent<Renderer>().enabled = true;
+
         yield return new WaitForSeconds(0);
     }
 
