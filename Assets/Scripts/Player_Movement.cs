@@ -76,6 +76,8 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
 
+    [SerializeField] private Manager manager;
+
     //! Animator
     Animator animator;
 
@@ -565,6 +567,30 @@ public class Player_Movement : MonoBehaviour
 
         }
 
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        Debug.Log(col.gameObject.name);
+
+        // collide with PixieDust
+        if (col.gameObject.CompareTag("Dust"))
+        {
+            Invoke("ManagerLoadNext", 3f);
+            // ! need sound
+            Destroy(col.gameObject);
+        }
+
+        // collide with
+        if (col.gameObject.CompareTag("Thorn"))
+        {
+            manager.Spawn();
+        }
+    }
+
+    private void ManagerLoadNext()
+    {
+        manager.LoadNext();
     }
 
 }

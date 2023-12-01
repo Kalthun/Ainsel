@@ -14,6 +14,7 @@ public class Manager : MonoBehaviour
     private GameObject Parallax;
     private GameObject PlayerPrefab;
     private GameObject Player;
+    [SerializeField] Collider2D playerHitbox;
 
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
@@ -44,7 +45,7 @@ public class Manager : MonoBehaviour
 
         scenes.Add("Title");  // 0
         scenes.Add("Testing Ground"); // 1
-        scenes.Add("Level2"); // 2
+        scenes.Add("Template"); // 2
         scenes.Add("Level3"); // 3
         scenes.Add("Pause");  // 4
 
@@ -93,25 +94,6 @@ public class Manager : MonoBehaviour
 
     }
 
-    void OnCollisionEnter2D(Collision2D col)
-    {
-        Debug.Log(col.gameObject.name);
-
-        // collide with PixieDust
-        if (col.gameObject.CompareTag("Dust"))
-        {
-            Invoke("LoadNext", 3f);
-            // ! need sound
-            Destroy(col.gameObject);
-        }
-
-        // collide with
-        if (col.gameObject.CompareTag("Thorn"))
-        {
-            Spawn();
-        }
-    }
-
     private void checkPause()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -128,12 +110,12 @@ public class Manager : MonoBehaviour
         }
     }
 
-    private void Spawn()
+    public void Spawn()
     {
         Player.transform.position = GameObject.Find("SpawnPoint").transform.position;
     }
 
-    private void LoadNext()
+    public void LoadNext()
     {
         sceneIndex++;
         SceneManager.LoadScene(scenes[sceneIndex]);
