@@ -109,7 +109,7 @@ public class Manager : MonoBehaviour
 
     private void TogglePause()
     {
-
+        Debug.Log("Pause");
     }
 
     private void checkFall()
