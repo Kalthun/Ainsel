@@ -35,7 +35,7 @@ public class Manager : MonoBehaviour
 
         if (textfade)
         {
-            if (start_text.color.a >= 1.0f || start_text.color.a <= 0.4f)
+            if (start_text.color.a >= 1.0f || start_text.color.a <= 0.3f)
             {
                 fadeValue *= -1;
             }
