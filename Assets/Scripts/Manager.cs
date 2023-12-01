@@ -41,7 +41,6 @@ public class Manager : MonoBehaviour
         PlayerPrefab.SetActive(false);
 
         scenes.Add("Pause");
-        scenes.Add("Menu");
         scenes.Add("Testing Ground");
 
         Title_Text = GameObject.Find("Title_Text");
@@ -62,7 +61,8 @@ public class Manager : MonoBehaviour
             break;
 
             case 1:
-                Menu();
+                StartCoroutine(TestingGroundStart());
+                TestingGround();
             break;
 
             default:
@@ -94,11 +94,6 @@ public class Manager : MonoBehaviour
         }
     }
 
-    private void Menu()
-    {
-
-    }
-
     private IEnumerator TitleStart()
     {
         source.clip = sounds[0];
@@ -108,6 +103,22 @@ public class Manager : MonoBehaviour
         slowDrop = false;
         start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 1f);
         textfade = true;
+    }
+
+    private void TestingGround()
+    {
+
+    }
+
+    private IEnumerator TestingGroundStart()
+    {
+        // source.clip = sounds[1];
+        // source.Play();
+        ParallaxPrefab.SetActive(true);
+        PlayerPrefab.SetActive(true);
+        PlayerPrefab.transform.position = Vector2.zero;
+
+        yield return new WaitUntil(() => sceneIndex != 1);
     }
 
 
