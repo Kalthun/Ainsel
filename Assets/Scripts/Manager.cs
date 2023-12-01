@@ -26,8 +26,6 @@ public class Manager : MonoBehaviour
     private bool textfade = false;
     private float fadeValue = 0.01f;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +45,9 @@ public class Manager : MonoBehaviour
         scenes.Add("Pause"); // 0
         scenes.Add("Testing Ground"); // 1
         scenes.Add("Template"); // 2
+        scenes.Add("Level1"); // 3
+        scenes.Add("Level2"); // 4
+        scenes.Add("Level3"); // 5
 
         Title_Text = GameObject.Find("Title_Text");
         start_text = GameObject.Find("start_text").GetComponent<Text>();
@@ -58,6 +59,8 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        checkPause();
 
         switch (sceneIndex)
         {
@@ -75,6 +78,19 @@ public class Manager : MonoBehaviour
 
         checkFall();
 
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+
+    }
+
+    private void checkPause()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+
+        }
     }
 
     private void checkFall()
