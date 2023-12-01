@@ -72,9 +72,9 @@ public class Player_Movement : MonoBehaviour
 
     [SerializeField] private Slider Dash_Bar;
     [SerializeField] private Slider Grapple_Bar;
-    [SerializeField] private AudioSource source;
 
-    public AudioClip[] sounds;
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip[] sounds;
 
     //! Animator
     Animator animator;
@@ -115,6 +115,8 @@ public class Player_Movement : MonoBehaviour
         Animate();
 
         Counters();
+
+        source.Play();
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);

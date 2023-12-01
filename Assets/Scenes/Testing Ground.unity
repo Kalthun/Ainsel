@@ -823,6 +823,7 @@ GameObject:
   - component: {fileID: 669432165}
   - component: {fileID: 669432164}
   - component: {fileID: 669432166}
+  - component: {fileID: 669432167}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -930,6 +931,14 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!81 &669432167
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669432162}
+  m_Enabled: 1
 --- !u!1 &1021363011
 GameObject:
   m_ObjectHideFlags: 0
@@ -2267,9 +2276,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3456342639170044802, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2253666556873320057}
-    - targetCorrespondingSourceObject: {fileID: 3456342639170044802, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2253666556873320065}
   m_SourcePrefab: {fileID: 100100000, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
 --- !u!1 &2253666556873320056 stripped
 GameObject:
@@ -2372,14 +2378,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!81 &2253666556873320065
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2253666556873320056}
-  m_Enabled: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
