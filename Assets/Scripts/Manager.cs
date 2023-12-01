@@ -167,9 +167,9 @@ public class Manager : MonoBehaviour
         source.clip = sounds[0];
         source.Play();
         slowDrop = true;
-        yield return new WaitUntil(() => Title_Text.transform.position.y < 0);
+        yield return new WaitUntil(() => Title_Text.transform.position.y < 0 || sceneIndex != 0);
         slowDrop = false;
-        start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 1f);
+        if (sceneIndex == 0) start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 1f);
         textfade = true;
     }
 
