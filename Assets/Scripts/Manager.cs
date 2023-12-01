@@ -73,6 +73,8 @@ public class Manager : MonoBehaviour
             break;
         }
 
+        checkFall();
+
     }
 
     private void checkFall()
