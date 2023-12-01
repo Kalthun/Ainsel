@@ -40,8 +40,9 @@ public class Manager : MonoBehaviour
         Object.DontDestroyOnLoad(PlayerPrefab);
         PlayerPrefab.SetActive(false);
 
-        scenes.Add("Pause");
-        scenes.Add("Testing Ground");
+        scenes.Add("Pause"); // 0
+        scenes.Add("Testing Ground"); // 1
+        scenes.Add("Template"); // 2
 
         Title_Text = GameObject.Find("Title_Text");
         start_text = GameObject.Find("start_text").GetComponent<Text>();
@@ -60,7 +61,7 @@ public class Manager : MonoBehaviour
                 Title();
             break;
 
-            case 1:
+            case 2:
                 StartCoroutine(TestingGroundStart());
                 TestingGround();
             break;
@@ -89,7 +90,7 @@ public class Manager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) && !slowDrop)
         {
-            sceneIndex = 1;
+            sceneIndex = 2;
             SceneManager.LoadScene(scenes[sceneIndex]);
         }
     }
@@ -118,7 +119,7 @@ public class Manager : MonoBehaviour
         PlayerPrefab.SetActive(true);
         PlayerPrefab.transform.position = Vector2.zero;
 
-        yield return new WaitUntil(() => sceneIndex != 1);
+        yield return new WaitUntil(() => sceneIndex != 2);
     }
 
 
