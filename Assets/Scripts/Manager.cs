@@ -16,6 +16,7 @@ public class Manager : MonoBehaviour
     private Text title_text;
     private GameObject Start_Text;
     private Text start_text;
+    private bool slowDrop = false;
     private bool textfade = false;
     private float fadeValue = 0.005f;
 
@@ -29,12 +30,20 @@ public class Manager : MonoBehaviour
         Start_Text = GameObject.Find("Start_Text");
         start_text = Title_Text.GetComponent<Text>();
 
+        Start_Text.SetActive(false);
+
         StartCoroutine(StartGame());
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (slowDrop)
+        {
+            Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - 0.5f);
+        }
+
         if (textfade)
         {
             if (start_text.color.a >= 1.0f || start_text.color.a <= 0.2f)
@@ -47,9 +56,13 @@ public class Manager : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        while(Title_Text.transform.position.y > 0) Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - 0.5f);
+        slowDrop = true;
 
-        start_text.GetComponent<Renderer>().enabled = true;
+        yield return new WaitUntil(() => Title_Text.transform.position.y < 0);
+
+        slowDrop = false;
+
+        textfade = true;
 
         yield return new WaitForSeconds(0);
     }
