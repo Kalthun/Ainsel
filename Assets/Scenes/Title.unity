@@ -211,6 +211,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 821474499918649373, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
+      propertyPath: m_Text
+      value: 'Text
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 821474499918649373, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 0f7caed5f556db77982e468650aacd01, type: 3}
     - target: {fileID: 4207510807199842887, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.0093856
@@ -239,6 +249,10 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 1426023844}
+    - target: {fileID: 5678658094271709370, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7434577158230200229, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
