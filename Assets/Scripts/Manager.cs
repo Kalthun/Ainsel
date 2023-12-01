@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class Manager : MonoBehaviour
 {
@@ -32,8 +33,6 @@ public class Manager : MonoBehaviour
         PlayerPrefab = GameObject.Find("PlayerPrefab");
         PlayerPrefab.SetActive(false);
 
-
-
         scenes.Add("Pause");
         scenes.Add("Menu");
         scenes.Add("Testing Ground");
@@ -52,13 +51,16 @@ public class Manager : MonoBehaviour
         switch (sceneIndex)
         {
             case -1:
-            Title();
+                Title();
+            break;
+
+            case 1:
+                Menu();
             break;
 
             default:
             break;
         }
-
 
     }
 
@@ -85,6 +87,11 @@ public class Manager : MonoBehaviour
         }
     }
 
+    private void Menu()
+    {
+        
+    }
+
     private IEnumerator StartGame()
     {
         slowDrop = true;
@@ -94,9 +101,6 @@ public class Manager : MonoBehaviour
         textfade = true;
     }
 
-    private void LoadNext()
-    {
 
-    }
 
 }
