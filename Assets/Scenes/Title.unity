@@ -249,6 +249,14 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 1426023844}
+    - target: {fileID: 5640776825501177190, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
+      propertyPath: sounds.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5640776825501177190, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
+      propertyPath: sounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 810a2625b2481ce459f52f8db1f328e4, type: 3}
     - target: {fileID: 5678658094271709370, guid: 633e72e657d31464fb1ac39ca2e0078e, type: 3}
       propertyPath: m_IsActive
       value: 0

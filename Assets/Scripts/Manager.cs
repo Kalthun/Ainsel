@@ -61,7 +61,7 @@ public class Manager : MonoBehaviour
                 Title();
             break;
 
-            case 2:
+            case 1:
                 StartCoroutine(TestingGroundStart());
                 TestingGround();
             break;
@@ -70,6 +70,11 @@ public class Manager : MonoBehaviour
             break;
         }
 
+    }
+
+    private void Spawn()
+    {
+        PlayerPrefab.transform.position = GameObject.Find("SpawnPoint").transform.position;
     }
 
     private void Title()
@@ -90,7 +95,7 @@ public class Manager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) && !slowDrop)
         {
-            sceneIndex = 2;
+            sceneIndex = 1;
             SceneManager.LoadScene(scenes[sceneIndex]);
         }
     }
@@ -113,13 +118,13 @@ public class Manager : MonoBehaviour
 
     private IEnumerator TestingGroundStart()
     {
-        // source.clip = sounds[1];
-        // source.Play();
+        source.clip = sounds[1];
+        source.Play();
         ParallaxPrefab.SetActive(true);
         PlayerPrefab.SetActive(true);
-        PlayerPrefab.transform.position = Vector2.zero;
+        Spawn();
 
-        yield return new WaitUntil(() => sceneIndex != 2);
+        yield return new WaitUntil(() => sceneIndex != 1);
     }
 
 
