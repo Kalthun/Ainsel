@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class Manager : MonoBehaviour
 {
 
-    private int sceneIndex = 0; // -1 for Pause
+    private int sceneIndex = 0;
     private List<string> scenes = new List<string>();
 
     private GameObject Camera;
@@ -43,7 +43,7 @@ public class Manager : MonoBehaviour
         PlayerPrefab.SetActive(false);
 
         scenes.Add("Title");  // 0
-        scenes.Add("Level1"); // 1
+        scenes.Add("Testing Ground"); // 1
         scenes.Add("Level2"); // 2
         scenes.Add("Level3"); // 3
         scenes.Add("Pause");  // 4
@@ -65,16 +65,24 @@ public class Manager : MonoBehaviour
 
         switch (sceneIndex)
         {
-            case -1:
-
-            break;
-
             case 0:
                 Title();
             break;
 
             case 1:
-                TestingGround();
+                Level1();
+            break;
+
+            case 2:
+                Level2();
+            break;
+
+            case 3:
+                Level3();
+            break;
+
+            case 4:
+                Pause();
             break;
 
             default:
@@ -87,12 +95,15 @@ public class Manager : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "PixieDust")
+        // collide with PixieDust
+        if (collision.gameObject.CompareTag("Dust"))
         {
             Invoke("LoadNext", 3f);
+            // ! need sound
             Destroy(collision.gameObject);
         }
 
+        // collide with
         if (collision.gameObject.CompareTag("Thorn"))
         {
             Spawn();
@@ -118,6 +129,12 @@ public class Manager : MonoBehaviour
     private void Spawn()
     {
         Player.transform.position = GameObject.Find("SpawnPoint").transform.position;
+    }
+
+    private void LoadNext()
+    {
+        sceneIndex++;
+        SceneManager.LoadScene(scenes[sceneIndex]);
     }
 
     private void Title()
@@ -153,7 +170,7 @@ public class Manager : MonoBehaviour
         textfade = true;
     }
 
-    private void TestingGround()
+    private void Level1()
     {
 
         if (testingLoad)
@@ -168,10 +185,19 @@ public class Manager : MonoBehaviour
 
     }
 
-    private void LoadNext()
+    private void Level2()
     {
-        sceneIndex++;
-        SceneManager.LoadScene(scenes[sceneIndex]);
+
+    }
+
+    private void Level3()
+    {
+
+    }
+
+    private void Pause()
+    {
+
     }
 
 }
