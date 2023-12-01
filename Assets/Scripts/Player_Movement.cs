@@ -249,7 +249,7 @@ public class Player_Movement : MonoBehaviour
                 }
                 else
                 {
-                    source.clip = sounds[2];
+                    source.clip = sounds[1];
                     source.Play();
                 }
 
@@ -259,7 +259,7 @@ public class Player_Movement : MonoBehaviour
             }
             else
             {
-                source.clip = sounds[1];
+                source.clip = sounds[2];
                 source.Play();
                 body.velocity = new Vector2(body.velocity.x, falling_jump_power);
             }
