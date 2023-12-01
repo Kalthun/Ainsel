@@ -46,7 +46,7 @@ public class Player_Movement : MonoBehaviour
     private float dash_power =20f;
     private float dash_time = 0.25f;
     private float dash_time_counter;
-    private float dash_cooldown = 0.1f;
+    [SerializeField] private float dash_cooldown = 0.1f;
 
     // grappling
     private Vector2 mouse_position;
@@ -59,8 +59,8 @@ public class Player_Movement : MonoBehaviour
     private float grapple_length = 2.5f; // ? could make it equal to distance bewteen player and hit
     private float grapple_hold_time = 3.0f;
     private float grapple_hold_time_counter;
-    private float grapple_cooldown = 0.1f;
-    private float grapple_miss_cooldown = 0.1f;
+    [SerializeField] private float grapple_cooldown = 0.1f;
+    [SerializeField] private float grapple_miss_cooldown = 0.1f;
     private float grapple_gravity_time = 0.5f;
     private float grapple_gravity_time_counter;
     private Vector2 grapple_hookshot_speed = new Vector2(20f, 20f);
