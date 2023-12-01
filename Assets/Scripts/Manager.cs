@@ -35,6 +35,21 @@ public class Manager : MonoBehaviour
     void Update()
     {
 
+        switch (sceneIndex)
+        {
+            case -1:
+            Title();
+            break;
+
+            default:
+            break;
+        }
+
+
+    }
+
+    private void Title()
+    {
         if (slowDrop)
         {
             Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - fadeValue);
@@ -47,6 +62,12 @@ public class Manager : MonoBehaviour
                 fadeValue *= -1;
             }
             start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, start_text.color.a + fadeValue);
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            sceneIndex = 1;
+            SceneManager.LoadScene(scenes[sceneIndex]);
         }
     }
 
