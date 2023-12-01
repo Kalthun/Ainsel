@@ -788,6 +788,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5414850914689444845, guid: 6508b9fbbae976240a07f866bbf71302, type: 3}
+      propertyPath: dash_cooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414850914689444845, guid: 6508b9fbbae976240a07f866bbf71302, type: 3}
+      propertyPath: grapple_cooldown
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5414850914689444845, guid: 6508b9fbbae976240a07f866bbf71302, type: 3}
+      propertyPath: grapple_miss_cooldown
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5776793269965064427, guid: 6508b9fbbae976240a07f866bbf71302, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
