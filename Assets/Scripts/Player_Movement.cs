@@ -72,6 +72,9 @@ public class Player_Movement : MonoBehaviour
 
     [SerializeField] private Slider Dash_Bar;
     [SerializeField] private Slider Grapple_Bar;
+    [SerializeField] private AudioSource source;
+
+    public AudioClip[] sounds;
 
     //! Animator
     Animator animator;
@@ -238,7 +241,17 @@ public class Player_Movement : MonoBehaviour
             if (coyote_time_counter > 0 || double_jump)
             {
 
-                if (!double_jump) animator.SetTrigger("Jump");
+                if (!double_jump)
+                {
+                    animator.SetTrigger("Jump");
+                    source.clip = sounds[0];
+                    source.Play();
+                }
+                else
+                {
+                    source.clip = sounds[2];
+                    source.Play();
+                }
 
                 body.velocity = new Vector2(body.velocity.x, double_jump ? double_jump_power : normal_jump_power);
 
@@ -246,6 +259,8 @@ public class Player_Movement : MonoBehaviour
             }
             else
             {
+                source.clip = sounds[1];
+                source.Play();
                 body.velocity = new Vector2(body.velocity.x, falling_jump_power);
             }
 
