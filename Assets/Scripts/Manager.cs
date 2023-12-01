@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class Manager : MonoBehaviour
 {
 
-    private int sceneIndex = -1; // 0 for pause
+    private int sceneIndex = 0; // -1 for Pause
     private List<string> scenes = new List<string>();
 
     private GameObject Camera;
@@ -42,12 +42,13 @@ public class Manager : MonoBehaviour
         Object.DontDestroyOnLoad(PlayerPrefab);
         PlayerPrefab.SetActive(false);
 
-        scenes.Add("Pause"); // 0
-        scenes.Add("Testing Ground"); // 1
-        scenes.Add("Template"); // 2
-        scenes.Add("Level1"); // 3
-        scenes.Add("Level2"); // 4
-        scenes.Add("Level3"); // 5
+        scenes.Add("Title");  // 0
+        scenes.Add("Level1"); // 1
+        scenes.Add("Level2"); // 2
+        scenes.Add("Level3"); // 3
+        scenes.Add("Pause");  // 4
+
+        source.loop = true; // repeat music
 
         Title_Text = GameObject.Find("Title_Text");
         start_text = GameObject.Find("start_text").GetComponent<Text>();
@@ -65,6 +66,10 @@ public class Manager : MonoBehaviour
         switch (sceneIndex)
         {
             case -1:
+
+            break;
+
+            case 0:
                 Title();
             break;
 
@@ -82,7 +87,16 @@ public class Manager : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.name == "PixieDust")
+        {
+            Invoke("LoadNext", 3f);
+            Destroy(collision.gameObject);
+        }
 
+        if (collision.gameObject.CompareTag("Thorn"))
+        {
+            Spawn();
+        }
     }
 
     private void checkPause()
@@ -124,8 +138,7 @@ public class Manager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            sceneIndex = 1;
-            SceneManager.LoadScene(scenes[sceneIndex]);
+            LoadNext();
         }
     }
 
@@ -153,6 +166,12 @@ public class Manager : MonoBehaviour
             testingLoad = false;
         }
 
+    }
+
+    private void LoadNext()
+    {
+        sceneIndex++;
+        SceneManager.LoadScene(scenes[sceneIndex]);
     }
 
 }
