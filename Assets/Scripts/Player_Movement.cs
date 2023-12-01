@@ -411,6 +411,9 @@ public class Player_Movement : MonoBehaviour
         Quaternion original_rotation = transform.rotation;
         body.gravityScale = 0f;
 
+        source.clip = sounds[3];
+        source.Play();
+
         if (Input.GetKey(KeyCode.W))
         {
             body.velocity = new Vector2((moving > 0) ? dash_power : -1 * dash_power, dash_power);
@@ -467,6 +470,9 @@ public class Player_Movement : MonoBehaviour
 
         if (hit.collider != null)
         {
+
+            source.clip = sounds[4];
+            source.Play();
 
             can_grapple = false;
             is_grappling = true;
@@ -531,6 +537,9 @@ public class Player_Movement : MonoBehaviour
             can_grapple = true;
 
         } else {
+
+            source.clip = sounds[5];
+            source.Play();
 
             missed_grapple = true;
 
