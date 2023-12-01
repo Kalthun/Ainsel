@@ -571,7 +571,7 @@ public class Player_Movement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log(col.gameObject.name);
+        Debug.Log(col.gameObject.tag);
 
         // collide with PixieDust
         if (col.gameObject.CompareTag("Dust"))
