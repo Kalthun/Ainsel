@@ -32,6 +32,8 @@ public class Manager : MonoBehaviour
     void Start()
     {
 
+        GUI.skin.settings.cursorColor = Color.cyan;
+
         Camera = GameObject.Find("Camera");
         Object.DontDestroyOnLoad(Camera);
 
