@@ -9,7 +9,7 @@ public class Manager : MonoBehaviour
     private Text start_text;
     private bool slowDrop = false;
     private bool textfade = false;
-    private float fadeValue = 0.05f;
+    private float fadeValue = 0.01f;
 
     // Start is called before the first frame update
     void Start()
