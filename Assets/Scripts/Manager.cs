@@ -17,6 +17,8 @@ public class Manager : MonoBehaviour
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
 
+    private bool testingLoad = true;
+
     private GameObject Title_Text;
     private Text start_text;
     private bool slowDrop = false;
@@ -62,7 +64,6 @@ public class Manager : MonoBehaviour
             break;
 
             case 1:
-                StartCoroutine(TestingGroundStart());
                 TestingGround();
             break;
 
@@ -70,6 +71,14 @@ public class Manager : MonoBehaviour
             break;
         }
 
+    }
+
+    private void checkFall()
+    {
+        if (PlayerPrefab.transform.position.y < -20)
+        {
+            Spawn();
+        }
     }
 
     private void Spawn()
@@ -93,7 +102,7 @@ public class Manager : MonoBehaviour
             start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, start_text.color.a + fadeValue);
         }
 
-        if (Input.GetMouseButtonUp(0) && !slowDrop)
+        if (Input.GetMouseButtonUp(0))
         {
             sceneIndex = 1;
             SceneManager.LoadScene(scenes[sceneIndex]);
@@ -114,19 +123,16 @@ public class Manager : MonoBehaviour
     private void TestingGround()
     {
 
+        if (testingLoad)
+        {
+            source.clip = sounds[1];
+            source.Play();
+            ParallaxPrefab.SetActive(true);
+            PlayerPrefab.SetActive(true);
+            Spawn();
+            testingLoad = false;
+        }
+
     }
-
-    private IEnumerator TestingGroundStart()
-    {
-        source.clip = sounds[1];
-        source.Play();
-        ParallaxPrefab.SetActive(true);
-        PlayerPrefab.SetActive(true);
-        Spawn();
-
-        yield return new WaitUntil(() => sceneIndex != 1);
-    }
-
-
 
 }
