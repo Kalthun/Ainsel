@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEditor;
 
 public class Manager : MonoBehaviour
 {
@@ -49,7 +48,7 @@ public class Manager : MonoBehaviour
         start_text = GameObject.Find("start_text").GetComponent<Text>();
         start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 0);
 
-        StartCoroutine(StartGame());
+        StartCoroutine(TitleStart());
     }
 
     // Update is called once per frame
@@ -88,7 +87,7 @@ public class Manager : MonoBehaviour
             start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, start_text.color.a + fadeValue);
         }
 
-        if (Input.GetMouseButtonDown(0) && !slowDrop)
+        if (Input.GetMouseButtonUp(0) && !slowDrop)
         {
             sceneIndex = 1;
             SceneManager.LoadScene(scenes[sceneIndex]);
@@ -100,7 +99,7 @@ public class Manager : MonoBehaviour
 
     }
 
-    private IEnumerator StartGame()
+    private IEnumerator TitleStart()
     {
         source.clip = sounds[0];
         source.Play();
