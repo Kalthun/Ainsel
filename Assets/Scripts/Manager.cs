@@ -5,11 +5,6 @@ using UnityEngine.UI;
 public class Manager : MonoBehaviour
 {
 
-    public static GameObject Player;
-    public static GameObject PlayerUI;
-    public static GameObject GameUI;
-    public static GameObject Camera;
-
     private GameObject Title_Text;
     private Text start_text;
     private bool slowDrop = false;
