@@ -21,6 +21,7 @@ public class Manager : MonoBehaviour
     private bool firstLoad = true;
 
     public bool isPaused = false;
+    [SerializeField] private GameObject PauseCanvas;
 
     private GameObject Title_Text;
     private Text start_text;
@@ -104,11 +105,15 @@ public class Manager : MonoBehaviour
         {
             Time.timeScale = 1;
             isPaused = false;
+            source.UnPause();
+            PauseCanvas.SetActive(false);
         }
         else
         {
             Time.timeScale = 0;
             isPaused = true;
+            source.Pause();
+            PauseCanvas.SetActive(true);
         }
 
     }
