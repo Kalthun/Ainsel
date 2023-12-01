@@ -18,7 +18,7 @@ public class Manager : MonoBehaviour
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
 
-    private bool testingLoad = true;
+    private bool firstLoad = true;
 
     private GameObject Title_Text;
     private Text start_text;
@@ -135,6 +135,7 @@ public class Manager : MonoBehaviour
     {
         sceneIndex++;
         SceneManager.LoadScene(scenes[sceneIndex]);
+        firstLoad = true;
     }
 
     private void Title()
@@ -155,6 +156,8 @@ public class Manager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            Parallax.SetActive(true);
+            PlayerPrefab.SetActive(true);
             LoadNext();
         }
     }
@@ -173,26 +176,30 @@ public class Manager : MonoBehaviour
     private void Level1()
     {
 
-        if (testingLoad)
+        if (firstLoad)
         {
-            source.clip = sounds[1];
-            source.Play();
-            Parallax.SetActive(true);
-            PlayerPrefab.SetActive(true);
             Spawn();
-            testingLoad = false;
+            firstLoad = false;
         }
 
     }
 
     private void Level2()
     {
-
+        if (firstLoad)
+        {
+            Spawn();
+            firstLoad = false;
+        }
     }
 
     private void Level3()
     {
-
+        if (firstLoad)
+        {
+            Spawn();
+            firstLoad = false;
+        }
     }
 
     private void Pause()
