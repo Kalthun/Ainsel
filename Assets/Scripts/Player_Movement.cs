@@ -55,12 +55,13 @@ public class Player_Movement : MonoBehaviour
     private GrappleMode grapple_mode = GrappleMode.SwingShot;
     private bool can_grapple = true;
     private bool is_grappling = false;
+    private bool missed_grapple = false;
     private float grapple_range = 10f;
     private float grapple_length = 2.5f; // ? could make it equal to distance bewteen player and hit
     private float grapple_hold_time = 3.0f;
     private float grapple_hold_time_counter;
-    private float grapple_cooldown = 0.1f;
-    private float grapple_miss_cooldown = 0f;
+    private float grapple_cooldown = 1f;
+    private float grapple_miss_cooldown = 1f;
     private float grapple_gravity_time = 0.5f;
     private float grapple_gravity_time_counter;
     private Vector2 grapple_hookshot_speed = new Vector2(20f, 20f);
@@ -359,13 +360,13 @@ public class Player_Movement : MonoBehaviour
         Dash_Bar.maxValue = dash_cooldown;
         if (Dash_Bar.value < Dash_Bar.maxValue) Dash_Bar.value += Time.deltaTime;
 
-        if (!can_grapple && is_grappling)
+        if (is_grappling)
         {
             GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.red;
             Grapple_Bar.maxValue = grapple_hold_time;
-            if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value -= Time.deltaTime;
+            if ((Grapple_Bar.value = grapple_hold_time_counter) < Grapple_Bar.maxValue) Grapple_Bar.value -= Time.deltaTime;
         }
-        else if (!can_grapple)
+        else if (missed_grapple)
         {
             GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.magenta;
             Grapple_Bar.maxValue = grapple_miss_cooldown;
@@ -510,8 +511,6 @@ public class Player_Movement : MonoBehaviour
             is_grappling = false;
             has_jumped = false;
 
-            Grapple_Bar.value = 0;
-
             yield return new WaitForSeconds(grapple_cooldown);
 
             can_grapple = true;
@@ -519,6 +518,10 @@ public class Player_Movement : MonoBehaviour
             Grapple_Bar.value = 0;
 
         } else {
+
+            missed_grapple = true;
+
+            Grapple_Bar.value = 0;
 
             transform.GetComponent<LineRenderer>().enabled = true;
 
@@ -532,9 +535,9 @@ public class Player_Movement : MonoBehaviour
 
             Grapple_Bar.value = grapple_miss_cooldown;
 
-            Grapple_Bar.value = 0;
-
             yield return new WaitForSeconds(grapple_miss_cooldown);
+
+            missed_grapple = false;
 
             can_grapple = true;
 
