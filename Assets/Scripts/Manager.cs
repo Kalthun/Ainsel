@@ -14,7 +14,6 @@ public class Manager : MonoBehaviour
     private GameObject Parallax;
     private GameObject PlayerPrefab;
     private GameObject Player;
-    [SerializeField] Collider2D playerHitbox;
 
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
@@ -43,11 +42,10 @@ public class Manager : MonoBehaviour
         Object.DontDestroyOnLoad(PlayerPrefab);
         PlayerPrefab.SetActive(false);
 
-        scenes.Add("Title");  // 0
+        scenes.Add("Title"); // 0
         scenes.Add("Testing Ground"); // 1
         scenes.Add("Template"); // 2
         scenes.Add("Level3"); // 3
-        scenes.Add("Pause");  // 4
 
         source.loop = true; // repeat music
 
@@ -82,10 +80,6 @@ public class Manager : MonoBehaviour
                 Level3();
             break;
 
-            case 4:
-                Pause();
-            break;
-
             default:
             break;
         }
@@ -98,8 +92,24 @@ public class Manager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
+            StartCoroutine(PauseGame());
         }
+    }
+
+    private IEnumerator PauseGame()
+    {
+        Time.timeScale = 0;
+        Player_Movement.isPaused = true;
+        TogglePause();
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
+        TogglePause();
+        Player_Movement.isPaused = false;
+        Time.timeScale = 1;
+    }
+    
+    private void TogglePause()
+    {
+
     }
 
     private void checkFall()

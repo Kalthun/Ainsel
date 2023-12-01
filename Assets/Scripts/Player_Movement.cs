@@ -13,6 +13,8 @@ public enum GrappleMode
 public class Player_Movement : MonoBehaviour
 {
 
+    public static bool isPaused = false;
+
     // generic movement
     private float moving;
     private bool is_facing_right = true;
@@ -89,6 +91,11 @@ public class Player_Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (isPaused)
+        {
+            return;
+        }
 
         switch (Input.GetAxisRaw("Horizontal"))
         {
@@ -293,6 +300,11 @@ public class Player_Movement : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        if (isPaused)
+        {
+            return;
+        }
 
         if (is_dashing || is_grappling)
         {
