@@ -12,6 +12,7 @@ public class Manager : MonoBehaviour
 
     private GameObject Camera;
     private GameObject Parallax;
+    private GameObject PlayerPrefab;
     private GameObject Player;
 
     [SerializeField] private AudioSource source;
@@ -38,9 +39,10 @@ public class Manager : MonoBehaviour
         Object.DontDestroyOnLoad(Parallax);
         Parallax.SetActive(false);
 
+        PlayerPrefab = GameObject.Find("PlayerPrefab");
         Player = GameObject.Find("Player");
-        Object.DontDestroyOnLoad(Player);
-        Player.SetActive(false);
+        Object.DontDestroyOnLoad(PlayerPrefab);
+        PlayerPrefab.SetActive(false);
 
         scenes.Add("Pause"); // 0
         scenes.Add("Testing Ground"); // 1
@@ -70,8 +72,6 @@ public class Manager : MonoBehaviour
             default:
             break;
         }
-
-        checkFall();
 
     }
 
@@ -130,7 +130,7 @@ public class Manager : MonoBehaviour
             source.clip = sounds[1];
             source.Play();
             Parallax.SetActive(true);
-            Player.SetActive(true);
+            PlayerPrefab.SetActive(true);
             Spawn();
             testingLoad = false;
         }
