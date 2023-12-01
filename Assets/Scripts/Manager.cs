@@ -8,9 +8,15 @@ using UnityEditor;
 public class Manager : MonoBehaviour
 {
 
+    private int sceneIndex = -1; // 0 for pause
+    private List<string> scenes = new List<string>();
+
     private GameObject CameraPrefab;
     private GameObject ParallaxPrefab;
     private GameObject PlayerPrefab;
+
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip[] sounds;
 
     private GameObject Title_Text;
     private Text start_text;
@@ -18,19 +24,21 @@ public class Manager : MonoBehaviour
     private bool textfade = false;
     private float fadeValue = 0.01f;
 
-    private int sceneIndex = -1; // 0 for pause
-    private List<string> scenes = new List<string>();
+
 
     // Start is called before the first frame update
     void Start()
     {
 
         CameraPrefab = GameObject.Find("Camera");
+        Object.DontDestroyOnLoad(CameraPrefab);
 
         ParallaxPrefab = GameObject.Find("Parallax");
+        Object.DontDestroyOnLoad(ParallaxPrefab);
         ParallaxPrefab.SetActive(false);
 
         PlayerPrefab = GameObject.Find("PlayerPrefab");
+        Object.DontDestroyOnLoad(PlayerPrefab);
         PlayerPrefab.SetActive(false);
 
         scenes.Add("Pause");
@@ -89,11 +97,13 @@ public class Manager : MonoBehaviour
 
     private void Menu()
     {
-        
+
     }
 
     private IEnumerator StartGame()
     {
+        source.clip = sounds[0];
+        source.Play();
         slowDrop = true;
         yield return new WaitUntil(() => Title_Text.transform.position.y < 0);
         slowDrop = false;
