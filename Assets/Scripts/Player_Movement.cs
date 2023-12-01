@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum GrappleMode
@@ -68,11 +70,14 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private Transform ground_check;
     [SerializeField] private LayerMask ground_layer;
 
+    [SerializeField] private Slider Dash_Bar;
+    [SerializeField] private Slider Grapple_Bar;
 
     //! Animator
     Animator animator;
 
-    void Start(){
+    void Start()
+    {
        animator = GetComponentInChildren<Animator>();
     }
 
@@ -105,6 +110,8 @@ public class Player_Movement : MonoBehaviour
         Flip();
 
         Animate();
+
+        Counters();
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
@@ -337,7 +344,6 @@ public class Player_Movement : MonoBehaviour
     }
 
     private void Animate() {
-
         if (body.velocity.x != 0 && IsGrounded())
         {
             animator.SetBool("Walk", true);
@@ -346,9 +352,33 @@ public class Player_Movement : MonoBehaviour
         {
             animator.SetBool("Walk", false);
         }
-
     }
 
+    private void Counters()
+    {
+        Dash_Bar.maxValue = dash_cooldown;
+        if (Dash_Bar.value < Dash_Bar.maxValue) Dash_Bar.value += Time.deltaTime;
+
+        if (!can_grapple && is_grappling)
+        {
+            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.red;
+            Grapple_Bar.maxValue = grapple_hold_time;
+            if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value -= Time.deltaTime;
+        }
+        else if (!can_grapple)
+        {
+            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.magenta;
+            Grapple_Bar.maxValue = grapple_miss_cooldown;
+            if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value += Time.deltaTime;
+        }
+        else
+        {
+            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.gray;
+            Grapple_Bar.maxValue = grapple_cooldown;
+            if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value += Time.deltaTime;
+        }
+
+    }
 
     private bool IsGrounded() {
         return Physics2D.OverlapCircle(ground_check.position, 0.2f, ground_layer);
@@ -405,6 +435,7 @@ public class Player_Movement : MonoBehaviour
         is_dashing = false;
         has_jumped = false;
 
+        Dash_Bar.value = 0;
         yield return new WaitForSeconds(dash_cooldown);
 
         can_dash = true;
@@ -479,9 +510,13 @@ public class Player_Movement : MonoBehaviour
             is_grappling = false;
             has_jumped = false;
 
+            Grapple_Bar.value = 0;
+
             yield return new WaitForSeconds(grapple_cooldown);
 
             can_grapple = true;
+
+            Grapple_Bar.value = 0;
 
         } else {
 
@@ -495,9 +530,15 @@ public class Player_Movement : MonoBehaviour
 
             transform.GetComponent<LineRenderer>().enabled = false;
 
+            Grapple_Bar.value = grapple_miss_cooldown;
+
+            Grapple_Bar.value = 0;
+
             yield return new WaitForSeconds(grapple_miss_cooldown);
 
             can_grapple = true;
+
+            Grapple_Bar.value = 0;
 
         }
 
