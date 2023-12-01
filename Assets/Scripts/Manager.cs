@@ -106,7 +106,7 @@ public class Manager : MonoBehaviour
         Player_Movement.isPaused = false;
         Time.timeScale = 1;
     }
-    
+
     private void TogglePause()
     {
 
