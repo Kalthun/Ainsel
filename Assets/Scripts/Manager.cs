@@ -7,6 +7,10 @@ using System.Collections.Generic;
 public class Manager : MonoBehaviour
 {
 
+    private GameObject CameraPrefab;
+    private GameObject ParallaxPrefab;
+    private GameObject PlayerPrefab;
+
     private GameObject Title_Text;
     private Text start_text;
     private bool slowDrop = false;
@@ -19,6 +23,16 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        CameraPrefab = GameObject.Find("Camera");
+
+        ParallaxPrefab = GameObject.Find("Parallax");
+        ParallaxPrefab.SetActive(false);
+
+        PlayerPrefab = GameObject.Find("PlayerPrefab");
+        PlayerPrefab.SetActive(false);
+
+
 
         scenes.Add("Pause");
         scenes.Add("Menu");
@@ -64,7 +78,7 @@ public class Manager : MonoBehaviour
             start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, start_text.color.a + fadeValue);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !slowDrop)
         {
             sceneIndex = 1;
             SceneManager.LoadScene(scenes[sceneIndex]);
