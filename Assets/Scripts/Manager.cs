@@ -13,8 +13,6 @@ public class Manager : MonoBehaviour
     public static GameObject Camera;
 
     private GameObject Title_Text;
-    private Text title_text;
-    private GameObject Start_Text;
     private Text start_text;
     private bool slowDrop = false;
     private bool textfade = false;
@@ -25,12 +23,10 @@ public class Manager : MonoBehaviour
     {
 
         Title_Text = GameObject.Find("Title_Text");
-        title_text = Title_Text.GetComponent<Text>();
 
-        Start_Text = GameObject.Find("Start_Text");
-        start_text = Title_Text.GetComponent<Text>();
+        start_text = GameObject.Find("start_text").GetComponent<Text>();
 
-        Start_Text.SetActive(false);
+        start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 0);
 
         StartCoroutine(StartGame());
     }
@@ -41,7 +37,7 @@ public class Manager : MonoBehaviour
 
         if (slowDrop)
         {
-            Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - 0.5f);
+            Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - fadeValue);
         }
 
         if (textfade)
@@ -62,9 +58,9 @@ public class Manager : MonoBehaviour
 
         slowDrop = false;
 
-        textfade = true;
+        start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 1f);
 
-        yield return new WaitForSeconds(0);
+        textfade = true;
     }
 
 }
