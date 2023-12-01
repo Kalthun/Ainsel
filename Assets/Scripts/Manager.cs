@@ -7,19 +7,28 @@ using UnityEngine.UI;
 public class Manager : MonoBehaviour
 {
 
-    public static GameObject Player   = GameObject.Find("Player");
-    public static GameObject PlayerUI = GameObject.Find("PlayerUI");
-    public static GameObject GameUI   = GameObject.Find("GameUI");
-    public static GameObject Camera   = GameObject.Find("Camera");
+    public static GameObject Player;
+    public static GameObject PlayerUI;
+    public static GameObject GameUI;
+    public static GameObject Camera;
 
-    [SerializeField] private Text title_text;
-    [SerializeField] private Text start_text;
+    private GameObject Title_Text;
+    private Text title_text;
+    private GameObject Start_Text;
+    private Text start_text;
     private bool textfade = false;
     private float fadeValue = 0.005f;
 
     // Start is called before the first frame update
     void Start()
     {
+
+        Title_Text = GameObject.Find("Title_Text");
+        title_text = Title_Text.GetComponent<Text>();
+
+        Start_Text = GameObject.Find("Start_Text");
+        start_text = Title_Text.GetComponent<Text>();
+
         StartCoroutine(StartGame());
     }
 
@@ -38,7 +47,7 @@ public class Manager : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        while (title_text.transform.position.y > 0) title_text.transform.position = new Vector2(title_text.transform.position.x, title_text.transform.position.y - 1);
+        while(Title_Text.transform.position.y > 0) Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - 0.5f);
 
         yield return new WaitForSeconds(0);
     }
