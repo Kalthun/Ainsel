@@ -11,14 +11,14 @@ public class Manager : MonoBehaviour
     private bool textfade = false;
     private float fadeValue = 0.01f;
 
+    private int sceneIndex = 0; // 0 for title
+
     // Start is called before the first frame update
     void Start()
     {
 
         Title_Text = GameObject.Find("Title_Text");
-
         start_text = GameObject.Find("start_text").GetComponent<Text>();
-
         start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 0);
 
         StartCoroutine(StartGame());
@@ -30,7 +30,7 @@ public class Manager : MonoBehaviour
 
         if (slowDrop)
         {
-            Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - fadeValue);
+            Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - 1);
         }
 
         if (textfade)
@@ -46,14 +46,15 @@ public class Manager : MonoBehaviour
     private IEnumerator StartGame()
     {
         slowDrop = true;
-
         yield return new WaitUntil(() => Title_Text.transform.position.y < 0);
-
         slowDrop = false;
-
         start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, 1f);
-
         textfade = true;
+    }
+
+    private void LoadNext()
+    {
+
     }
 
 }
