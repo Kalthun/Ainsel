@@ -90,7 +90,7 @@ public class Manager : MonoBehaviour
 
     private void checkPause()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             StartCoroutine(PauseGame());
         }
@@ -101,7 +101,7 @@ public class Manager : MonoBehaviour
         Time.timeScale = 0;
         Player_Movement.isPaused = true;
         TogglePause();
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Tab));
         TogglePause();
         Player_Movement.isPaused = false;
         Time.timeScale = 1;
