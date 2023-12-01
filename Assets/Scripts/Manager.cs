@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class Manager : MonoBehaviour
 {
@@ -9,13 +11,18 @@ public class Manager : MonoBehaviour
     private Text start_text;
     private bool slowDrop = false;
     private bool textfade = false;
-    private float fadeValue = 0.02f;
+    private float fadeValue = 0.01f;
 
-    private int sceneIndex = 0; // 0 for title
+    private int sceneIndex = -1; // 0 for pause
+    private List<string> scenes = new List<string>();
 
     // Start is called before the first frame update
     void Start()
     {
+
+        scenes.Add("Pause");
+        scenes.Add("Menu");
+        scenes.Add("Testing Ground");
 
         Title_Text = GameObject.Find("Title_Text");
         start_text = GameObject.Find("start_text").GetComponent<Text>();
