@@ -362,19 +362,19 @@ public class Player_Movement : MonoBehaviour
 
         if (is_grappling)
         {
-            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.red;
+            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.yellow;
             Grapple_Bar.maxValue = grapple_hold_time;
             if ((Grapple_Bar.value = grapple_hold_time_counter) < Grapple_Bar.maxValue) Grapple_Bar.value -= Time.deltaTime;
         }
         else if (missed_grapple)
         {
-            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.magenta;
+            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.red;
             Grapple_Bar.maxValue = grapple_miss_cooldown;
             if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value += Time.deltaTime;
         }
         else
         {
-            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.gray;
+            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.magenta;
             Grapple_Bar.maxValue = grapple_cooldown;
             if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value += Time.deltaTime;
         }
