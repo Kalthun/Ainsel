@@ -13,8 +13,6 @@ public enum GrappleMode
 public class Player_Movement : MonoBehaviour
 {
 
-    public static bool isPaused = false;
-
     // generic movement
     private float moving;
     private bool is_facing_right = true;
@@ -92,7 +90,7 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
 
-        if (isPaused)
+        if (manager.isPaused)
         {
             return;
         }
@@ -105,7 +103,7 @@ public class Player_Movement : MonoBehaviour
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
                 }
-                break;
+            break;
 
             case > 0:
                 moving = 1;
@@ -113,10 +111,10 @@ public class Player_Movement : MonoBehaviour
                 {
                     body.velocity = new Vector2(0f, body.velocity.y);
                 }
-                break;
+            break;
 
             default:
-                break;
+            break;
         }
 
         Flip();
@@ -301,7 +299,7 @@ public class Player_Movement : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (isPaused)
+        if (manager.isPaused)
         {
             return;
         }

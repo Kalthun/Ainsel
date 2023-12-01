@@ -20,6 +20,8 @@ public class Manager : MonoBehaviour
 
     private bool firstLoad = true;
 
+    public bool isPaused = false;
+
     private GameObject Title_Text;
     private Text start_text;
     private bool slowDrop = false;
@@ -60,7 +62,7 @@ public class Manager : MonoBehaviour
     void Update()
     {
 
-        checkPause();
+        CheckPause();
 
         switch (sceneIndex)
         {
@@ -84,35 +86,34 @@ public class Manager : MonoBehaviour
             break;
         }
 
-        checkFall();
+        CheckFall();
 
     }
 
-    private void checkPause()
+    private void CheckPause()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            StartCoroutine(PauseGame());
+            TogglePause();
         }
-    }
-
-    private IEnumerator PauseGame()
-    {
-        Time.timeScale = 0;
-        Player_Movement.isPaused = true;
-        TogglePause();
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Tab));
-        TogglePause();
-        Player_Movement.isPaused = false;
-        Time.timeScale = 1;
     }
 
     private void TogglePause()
     {
-        Debug.Log("Pause");
+        if (isPaused)
+        {
+            Time.timeScale = 1;
+            isPaused = false;
+        }
+        else
+        {
+            Time.timeScale = 0;
+            isPaused = true;
+        }
+
     }
 
-    private void checkFall()
+    private void CheckFall()
     {
         if (Player.transform.position.y < -20)
         {
@@ -194,11 +195,6 @@ public class Manager : MonoBehaviour
             Spawn();
             firstLoad = false;
         }
-    }
-
-    private void Pause()
-    {
-
     }
 
 }
