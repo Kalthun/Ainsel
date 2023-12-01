@@ -116,8 +116,6 @@ public class Player_Movement : MonoBehaviour
 
         Counters();
 
-        source.Play();
-
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
