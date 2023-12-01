@@ -9,7 +9,7 @@ public class Manager : MonoBehaviour
     private Text start_text;
     private bool slowDrop = false;
     private bool textfade = false;
-    private float fadeValue = 0.01f;
+    private float fadeValue = 0.02f;
 
     private int sceneIndex = 0; // 0 for title
 
@@ -30,12 +30,12 @@ public class Manager : MonoBehaviour
 
         if (slowDrop)
         {
-            Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - 1);
+            Title_Text.transform.position = new Vector2(Title_Text.transform.position.x, Title_Text.transform.position.y - fadeValue);
         }
 
         if (textfade)
         {
-            if (start_text.color.a >= 1.0f || start_text.color.a <= 0.3f)
+            if (start_text.color.a >= 1f || start_text.color.a <= 0.3f)
             {
                 fadeValue *= -1;
             }
