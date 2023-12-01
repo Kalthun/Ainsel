@@ -378,7 +378,6 @@ public class Player_Movement : MonoBehaviour
             Grapple_Bar.maxValue = grapple_cooldown;
             if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value += Time.deltaTime;
         }
-
     }
 
     private bool IsGrounded() {
@@ -511,11 +510,11 @@ public class Player_Movement : MonoBehaviour
             is_grappling = false;
             has_jumped = false;
 
+            Grapple_Bar.value = 0;
+
             yield return new WaitForSeconds(grapple_cooldown);
 
             can_grapple = true;
-
-            Grapple_Bar.value = 0;
 
         } else {
 
@@ -533,15 +532,13 @@ public class Player_Movement : MonoBehaviour
 
             transform.GetComponent<LineRenderer>().enabled = false;
 
-            Grapple_Bar.value = grapple_miss_cooldown;
-
             yield return new WaitForSeconds(grapple_miss_cooldown);
 
             missed_grapple = false;
 
             can_grapple = true;
 
-            Grapple_Bar.value = 0;
+            Grapple_Bar.value = grapple_cooldown;
 
         }
 
