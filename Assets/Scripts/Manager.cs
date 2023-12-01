@@ -93,18 +93,20 @@ public class Manager : MonoBehaviour
 
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter2D(Collision2D col)
     {
+        Debug.Log(col.gameObject.name);
+
         // collide with PixieDust
-        if (collision.gameObject.CompareTag("Dust"))
+        if (col.gameObject.CompareTag("Dust"))
         {
             Invoke("LoadNext", 3f);
             // ! need sound
-            Destroy(collision.gameObject);
+            Destroy(col.gameObject);
         }
 
         // collide with
-        if (collision.gameObject.CompareTag("Thorn"))
+        if (col.gameObject.CompareTag("Thorn"))
         {
             Spawn();
         }
