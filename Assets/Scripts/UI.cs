@@ -16,6 +16,6 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = GameObject.Find("Player").transform.position + new Vector3(0, -0.5f, 0);
+        transform.position = GameObject.Find("Player").transform.position + new Vector3(0, -0.7f, 0);
     }
 }
