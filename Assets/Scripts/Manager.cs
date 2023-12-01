@@ -10,9 +10,9 @@ public class Manager : MonoBehaviour
     private int sceneIndex = -1; // 0 for pause
     private List<string> scenes = new List<string>();
 
-    private GameObject CameraPrefab;
-    private GameObject ParallaxPrefab;
-    private GameObject PlayerPrefab;
+    private GameObject Camera;
+    private GameObject Parallax;
+    private GameObject Player;
 
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
@@ -31,16 +31,16 @@ public class Manager : MonoBehaviour
     void Start()
     {
 
-        CameraPrefab = GameObject.Find("Camera");
-        Object.DontDestroyOnLoad(CameraPrefab);
+        Camera = GameObject.Find("Camera");
+        Object.DontDestroyOnLoad(Camera);
 
-        ParallaxPrefab = GameObject.Find("Parallax");
-        Object.DontDestroyOnLoad(ParallaxPrefab);
-        ParallaxPrefab.SetActive(false);
+        Parallax = GameObject.Find("Parallax");
+        Object.DontDestroyOnLoad(Parallax);
+        Parallax.SetActive(false);
 
-        PlayerPrefab = GameObject.Find("PlayerPrefab");
-        Object.DontDestroyOnLoad(PlayerPrefab);
-        PlayerPrefab.SetActive(false);
+        Player = GameObject.Find("Player");
+        Object.DontDestroyOnLoad(Player);
+        Player.SetActive(false);
 
         scenes.Add("Pause"); // 0
         scenes.Add("Testing Ground"); // 1
@@ -71,11 +71,13 @@ public class Manager : MonoBehaviour
             break;
         }
 
+        checkFall();
+
     }
 
     private void checkFall()
     {
-        if (PlayerPrefab.transform.position.y < -20)
+        if (Player.transform.position.y < -20)
         {
             Spawn();
         }
@@ -83,7 +85,7 @@ public class Manager : MonoBehaviour
 
     private void Spawn()
     {
-        PlayerPrefab.transform.position = GameObject.Find("SpawnPoint").transform.position;
+        Player.transform.position = GameObject.Find("SpawnPoint").transform.position;
     }
 
     private void Title()
@@ -127,8 +129,8 @@ public class Manager : MonoBehaviour
         {
             source.clip = sounds[1];
             source.Play();
-            ParallaxPrefab.SetActive(true);
-            PlayerPrefab.SetActive(true);
+            Parallax.SetActive(true);
+            Player.SetActive(true);
             Spawn();
             testingLoad = false;
         }
