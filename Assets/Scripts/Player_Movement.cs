@@ -590,7 +590,7 @@ public class Player_Movement : MonoBehaviour
         // collide with PixieDust
         if (col.gameObject.CompareTag("Dust"))
         {
-            Invoke("ManagerLoadNext", 3f);
+            Invoke("ManagerLoadNext", 2f);
             source.clip = sounds[6];
             source.Play();
             Destroy(col.gameObject);

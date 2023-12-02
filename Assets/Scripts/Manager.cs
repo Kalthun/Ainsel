@@ -142,11 +142,16 @@ public class Manager : MonoBehaviour
 
     public void LoadNext()
     {
-        if (sceneIndex == 3) sceneIndex = -1;
+        if (sceneIndex == 3)
+        {
 
-        sceneIndex++;
-        SceneManager.LoadScene(scenes[sceneIndex]);
-        firstLoad = true;
+        }
+        else
+        {
+            sceneIndex++;
+            SceneManager.LoadScene(scenes[sceneIndex]);
+            firstLoad = true;
+        }
     }
 
     private void Title()
