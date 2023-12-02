@@ -109,19 +109,19 @@ public class Manager : MonoBehaviour
     {
         if (isPaused)
         {
+            source.UnPause();
             Time.timeScale = 1;
             isPaused = false;
-            source.UnPause();
             PauseCanvas.SetActive(false);
-            Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
         }
         else
         {
+            source.Pause();
             Time.timeScale = 0;
             isPaused = true;
-            source.Pause();
             PauseCanvas.SetActive(true);
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         }
     }
 
