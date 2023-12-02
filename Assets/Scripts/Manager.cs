@@ -22,6 +22,8 @@ public class Manager : MonoBehaviour
 
     public bool isPaused = false;
     [SerializeField] private GameObject PauseCanvas;
+    [SerializeField] private Texture2D cursor;
+    [SerializeField] private Slider volumeSlider;
 
     private GameObject Title_Text;
     private Text start_text;
@@ -32,6 +34,8 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        volumeSlider.value = 0.5f;
 
         Camera = GameObject.Find("Camera");
         Object.DontDestroyOnLoad(Camera);
@@ -97,6 +101,8 @@ public class Manager : MonoBehaviour
         {
             TogglePause();
         }
+
+        source.volume = volumeSlider.value;
     }
 
     private void TogglePause()
@@ -107,6 +113,7 @@ public class Manager : MonoBehaviour
             isPaused = false;
             source.UnPause();
             PauseCanvas.SetActive(false);
+            Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
         }
         else
         {
@@ -114,8 +121,8 @@ public class Manager : MonoBehaviour
             isPaused = true;
             source.Pause();
             PauseCanvas.SetActive(true);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
-
     }
 
     private void CheckFall()

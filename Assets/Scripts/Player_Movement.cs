@@ -581,8 +581,6 @@ public class Player_Movement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log(col.gameObject.tag);
-
         // collide with PixieDust
         if (col.gameObject.CompareTag("Dust"))
         {
@@ -594,6 +592,7 @@ public class Player_Movement : MonoBehaviour
         // collide with
         if (col.gameObject.CompareTag("Thorn"))
         {
+            // ! need sound
             manager.Spawn();
         }
     }
