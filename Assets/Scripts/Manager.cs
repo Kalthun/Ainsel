@@ -69,6 +69,8 @@ public class Manager : MonoBehaviour
 
         CheckPause();
 
+        if (isPaused) return;
+
         switch (sceneIndex)
         {
             case 0:

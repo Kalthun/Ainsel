@@ -75,6 +75,7 @@ public class Player_Movement : MonoBehaviour
 
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
+    [SerializeField] private Slider volumeSlider;
 
     [SerializeField] private Manager manager;
 
@@ -92,6 +93,7 @@ public class Player_Movement : MonoBehaviour
 
         if (manager.isPaused)
         {
+            source.volume = volumeSlider.value;
             return;
         }
 
