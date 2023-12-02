@@ -144,7 +144,7 @@ public class Manager : MonoBehaviour
     {
         if (sceneIndex == 3)
         {
-
+            SceneManager.LoadScene(0);
         }
         else
         {
