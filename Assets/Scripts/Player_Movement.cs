@@ -612,7 +612,7 @@ public class Player_Movement : MonoBehaviour
         manager.LoadNext();
     }
 
-    public void Falling()
+    private void Falling()
     {
         source.clip = sounds[8];
         source.Play();
