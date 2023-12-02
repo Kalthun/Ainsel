@@ -109,19 +109,15 @@ public class Manager : MonoBehaviour
     {
         if (isPaused)
         {
-            source.UnPause();
             Time.timeScale = 1;
             isPaused = false;
             PauseCanvas.SetActive(false);
-            Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
         }
         else
         {
-            source.Pause();
             Time.timeScale = 0;
             isPaused = true;
             PauseCanvas.SetActive(true);
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         }
     }
 
@@ -161,7 +157,7 @@ public class Manager : MonoBehaviour
             start_text.color = new Color(start_text.color.r, start_text.color.g, start_text.color.b, start_text.color.a + fadeValue);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && !isPaused)
         {
             Parallax.SetActive(true);
             PlayerPrefab.SetActive(true);
