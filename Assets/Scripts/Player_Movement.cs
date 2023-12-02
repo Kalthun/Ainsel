@@ -402,7 +402,8 @@ public class Player_Movement : MonoBehaviour
         }
         else
         {
-            GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.magenta;
+            if (grapple_mode == GrappleMode.HookShot) GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.magenta;
+            else GameObject.Find("Grapple_Fill").transform.GetComponent<Image>().color = Color.blue;
             Grapple_Bar.maxValue = grapple_cooldown;
             if (Grapple_Bar.value < Grapple_Bar.maxValue) Grapple_Bar.value += Time.deltaTime;
         }
