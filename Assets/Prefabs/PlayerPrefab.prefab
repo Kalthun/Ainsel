@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5942598615335795400}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,10 @@ PrefabInstance:
     - target: {fileID: 3456342639170044802, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637205532432195579, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4406833124749607614, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
       propertyPath: m_Size.x
@@ -291,6 +295,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5942598615335795400}
     m_Modifications:
+    - target: {fileID: 1704322766670887926, guid: c64d0ef295870614fb9e785718acf286, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2744737304549550479, guid: c64d0ef295870614fb9e785718acf286, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -298,6 +306,18 @@ PrefabInstance:
     - target: {fileID: 2744737304549550479, guid: c64d0ef295870614fb9e785718acf286, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3558385840202679448, guid: c64d0ef295870614fb9e785718acf286, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856670065906891216, guid: c64d0ef295870614fb9e785718acf286, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584682918637622243, guid: c64d0ef295870614fb9e785718acf286, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7519275942499961866, guid: c64d0ef295870614fb9e785718acf286, type: 3}
       propertyPath: m_Pivot.x
@@ -379,6 +399,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7963091709502999353, guid: c64d0ef295870614fb9e785718acf286, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8072974082762449421, guid: c64d0ef295870614fb9e785718acf286, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -387,9 +411,17 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8228422767386610367, guid: c64d0ef295870614fb9e785718acf286, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9008360254838740604, guid: c64d0ef295870614fb9e785718acf286, type: 3}
       propertyPath: m_Name
       value: PlayerUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008360254838740604, guid: c64d0ef295870614fb9e785718acf286, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9032474833365792553, guid: c64d0ef295870614fb9e785718acf286, type: 3}
       propertyPath: m_SortingOrder
