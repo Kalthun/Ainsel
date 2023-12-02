@@ -123,7 +123,7 @@ public class Player_Movement : MonoBehaviour
 
         Counters();
 
-        if (transform.position.y < -20)
+        if (manager.respawning)
         {
             Falling();
             grapple_hold_time_counter = 0;

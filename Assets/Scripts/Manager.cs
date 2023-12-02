@@ -14,6 +14,7 @@ public class Manager : MonoBehaviour
     private GameObject Parallax;
     private GameObject PlayerPrefab;
     private GameObject Player;
+    public bool respawning = false;
 
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
@@ -140,6 +141,7 @@ public class Manager : MonoBehaviour
     {
         if (Player.transform.position.y < -20.1f)
         {
+            respawning = true;
             Spawn();
         }
     }
@@ -147,6 +149,7 @@ public class Manager : MonoBehaviour
     public void Spawn()
     {
         Player.transform.position = GameObject.Find("SpawnPoint").transform.position;
+        respawning = false;
     }
 
     public void LoadNext()
