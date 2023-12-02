@@ -144,6 +144,9 @@ public class Manager : MonoBehaviour
     {
         if (sceneIndex == 3)
         {
+            Object.DontDestroyOnLoad(Camera);
+            Object.DontDestroyOnLoad(PlayerPrefab);
+            Object.DontDestroyOnLoad(Parallax);
             SceneManager.LoadScene(0);
         }
         else
