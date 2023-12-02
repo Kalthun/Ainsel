@@ -142,8 +142,6 @@ public class Manager : MonoBehaviour
 
     public void LoadNext()
     {
-        if (sceneIndex == 3) sceneIndex = -1;
-
         sceneIndex++;
         SceneManager.LoadScene(scenes[sceneIndex]);
         firstLoad = true;
@@ -167,6 +165,8 @@ public class Manager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) && !isPaused)
         {
+            Parallax.SetActive(true);
+            PlayerPrefab.SetActive(true);
             LoadNext();
         }
     }
@@ -187,8 +187,6 @@ public class Manager : MonoBehaviour
 
         if (firstLoad)
         {
-            Parallax.SetActive(true);
-            PlayerPrefab.SetActive(true);
             source.clip = sounds[1];
             source.Play();
             Spawn();
