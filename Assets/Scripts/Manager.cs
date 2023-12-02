@@ -141,11 +141,11 @@ public class Manager : MonoBehaviour
     {
         if (Player.transform.position.y < -20.1f)
         {
-            StartCoroutine(Spawn);
+            StartCoroutine(Spawn());
         }
     }
 
-    private IEnumerator Spawn()
+    public IEnumerator Spawn()
     {
         respawning = true;
         yield return new WaitForSeconds(1);

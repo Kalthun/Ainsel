@@ -602,7 +602,7 @@ public class Player_Movement : MonoBehaviour
         {
             source.clip = sounds[7];
             source.Play();
-            manager.Spawn();
+            manager.StartCoroutine(manager.Spawn());
         }
     }
 
