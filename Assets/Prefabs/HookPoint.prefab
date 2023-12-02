@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2652907214334888715}
   - component: {fileID: -1804938522733671920}
   - component: {fileID: -3695657981263644779}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HookPoint
   m_TagString: Hookpoint
   m_Icon: {fileID: 0}
