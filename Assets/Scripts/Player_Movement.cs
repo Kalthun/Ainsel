@@ -53,7 +53,7 @@ public class Player_Movement : MonoBehaviour
     private bool can_grapple = true;
     private bool is_grappling = false;
     private bool missed_grapple = false;
-    private float grapple_range = 20f;
+    private float grapple_range = 10f;
     private float grapple_length = 2.5f; // ? could make it equal to distance bewteen player and hit
     private float grapple_hold_time = 3.0f;
     private float grapple_hold_time_counter;
