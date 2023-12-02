@@ -102,8 +102,6 @@ public class Manager : MonoBehaviour
             break;
         }
 
-        CheckFall();
-
     }
 
     private void CheckPause()
@@ -137,20 +135,9 @@ public class Manager : MonoBehaviour
         }
     }
 
-    private void CheckFall()
+    public void Spawn()
     {
-        if (Player.transform.position.y < -20.1f)
-        {
-            StartCoroutine(Spawn());
-        }
-    }
-
-    public IEnumerator Spawn()
-    {
-        respawning = true;
-        yield return new WaitForSeconds(1);
         Player.transform.position = GameObject.Find("SpawnPoint").transform.position;
-        respawning = false;
     }
 
     public void LoadNext()

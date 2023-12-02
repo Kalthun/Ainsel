@@ -123,10 +123,9 @@ public class Player_Movement : MonoBehaviour
 
         Counters();
 
-        if (manager.respawning)
+        if (transform.position.y < -20)
         {
             Falling();
-            grapple_hold_time_counter = 0;
         }
 
         // setting Line render to place body
@@ -602,7 +601,7 @@ public class Player_Movement : MonoBehaviour
         {
             source.clip = sounds[7];
             source.Play();
-            manager.StartCoroutine(manager.Spawn());
+            manager.Spawn();
         }
     }
 
@@ -615,6 +614,8 @@ public class Player_Movement : MonoBehaviour
     {
         source.clip = sounds[8];
         source.Play();
+        grapple_hold_time_counter = -1;
+        manager.Spawn();
     }
 
 }
