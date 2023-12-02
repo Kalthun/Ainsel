@@ -141,13 +141,14 @@ public class Manager : MonoBehaviour
     {
         if (Player.transform.position.y < -20.1f)
         {
-            respawning = true;
-            Spawn();
+            StartCoroutine(Spawn);
         }
     }
 
-    public void Spawn()
+    private IEnumerator Spawn()
     {
+        respawning = true;
+        yield return new WaitForSeconds(1);
         Player.transform.position = GameObject.Find("SpawnPoint").transform.position;
         respawning = false;
     }
