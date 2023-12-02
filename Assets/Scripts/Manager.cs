@@ -112,8 +112,11 @@ public class Manager : MonoBehaviour
             TogglePause();
         }
 
-        source.volume = volumeSlider.value;
+       if (isPaused)
+       {
+         source.volume = volumeSlider.value;
         Screen.SetResolution(widths[resolutionSelection.value], heights[resolutionSelection.value], fullscreenToggle.isOn);
+       }
     }
 
 
