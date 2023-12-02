@@ -138,7 +138,7 @@ public class Manager : MonoBehaviour
 
     private void CheckFall()
     {
-        if (Player.transform.position.y < -20)
+        if (Player.transform.position.y < -21)
         {
             Spawn();
         }
