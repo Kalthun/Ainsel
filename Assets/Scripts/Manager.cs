@@ -56,8 +56,8 @@ public class Manager : MonoBehaviour
         PlayerPrefab.SetActive(false);
 
         scenes.Add("Title"); // 0
-        scenes.Add("Testing Ground"); // 1
-        scenes.Add("Template"); // 2
+        scenes.Add("Level1"); // 1
+        scenes.Add("Level2"); // 2
         scenes.Add("Level3"); // 3
 
         source.loop = true; // repeat music
