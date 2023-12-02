@@ -76,8 +76,6 @@ public class Manager : MonoBehaviour
 
         CheckPause();
 
-        Debug.Log(Screen.fullScreenMode);
-
         if (isPaused) return;
 
         switch (sceneIndex)
