@@ -151,6 +151,8 @@ public class Manager : MonoBehaviour
 
     public void LoadNext()
     {
+        if (sceneIndex == 3) sceneIndex = -1;
+
         sceneIndex++;
         SceneManager.LoadScene(scenes[sceneIndex]);
         firstLoad = true;
