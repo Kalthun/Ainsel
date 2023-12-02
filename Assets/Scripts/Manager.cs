@@ -114,7 +114,7 @@ public class Manager : MonoBehaviour
 
        if (isPaused)
        {
-         source.volume = volumeSlider.value;
+        source.volume = volumeSlider.value;
         Screen.SetResolution(widths[resolutionSelection.value], heights[resolutionSelection.value], fullscreenToggle.isOn);
        }
     }
@@ -196,6 +196,8 @@ public class Manager : MonoBehaviour
 
         if (firstLoad)
         {
+            source.clip = sounds[1];
+            source.Play();
             Spawn();
             firstLoad = false;
         }
