@@ -174,8 +174,6 @@ public class Manager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) && !isPaused)
         {
-            Parallax.SetActive(true);
-            PlayerPrefab.SetActive(true);
             LoadNext();
         }
     }
@@ -196,6 +194,8 @@ public class Manager : MonoBehaviour
 
         if (firstLoad)
         {
+            Parallax.SetActive(true);
+            PlayerPrefab.SetActive(true);
             source.clip = sounds[1];
             source.Play();
             Spawn();
