@@ -601,6 +601,7 @@ public class Player_Movement : MonoBehaviour
         {
             source.clip = sounds[7];
             source.Play();
+            grapple_hold_time_counter = -1;
             manager.Spawn();
         }
     }
