@@ -7,9 +7,11 @@ using System.Collections.Generic;
 public class Manager : MonoBehaviour
 {
 
+    // track scenes
     private int sceneIndex = 0;
     private List<string> scenes = new List<string>();
 
+    // carry objects through scenes
     private GameObject Camera;
     private GameObject Parallax;
     private GameObject PlayerPrefab;
@@ -21,16 +23,17 @@ public class Manager : MonoBehaviour
 
     private bool firstLoad = true;
 
+    // pause menu
     public bool isPaused = false;
     [SerializeField] private GameObject PauseCanvas;
     [SerializeField] private Texture2D cursor;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Toggle fullscreenToggle;
-
     [SerializeField] private Dropdown resolutionSelection;
     private List<int> widths;
     private List<int> heights;
 
+    // title
     private GameObject Title_Text;
     private Text start_text;
     private bool slowDrop = false;
@@ -142,9 +145,9 @@ public class Manager : MonoBehaviour
     {
         if (sceneIndex == 3)
         {
-            Object.DontDestroyOnLoad(Camera);
-            Object.DontDestroyOnLoad(PlayerPrefab);
-            Object.DontDestroyOnLoad(Parallax);
+            Object.Destroy(Camera);
+            Object.Destroy(PlayerPrefab);
+            Object.Destroy(Parallax);
             SceneManager.LoadScene(0);
         }
         else

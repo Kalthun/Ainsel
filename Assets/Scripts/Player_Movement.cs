@@ -74,7 +74,6 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] sounds;
     [SerializeField] private Slider volumeSlider;
-
     [SerializeField] private Manager manager;
 
     //! Animator
@@ -489,6 +488,8 @@ public class Player_Movement : MonoBehaviour
         if (hit.collider != null)
         {
 
+            // hit
+
             source.clip = sounds[4];
             source.Play();
 
@@ -556,17 +557,14 @@ public class Player_Movement : MonoBehaviour
 
         } else {
 
+            // missed
+
             source.clip = sounds[5];
             source.Play();
-
             missed_grapple = true;
-
             Grapple_Bar.value = 0;
-
             transform.GetComponent<LineRenderer>().enabled = true;
-
             Vector2 delta = (mouse_position - (Vector2)transform.position).normalized * (Vector2.Distance((Vector2)transform.position, mouse_position) - grapple_range);
-
             transform.GetComponent<LineRenderer>().SetPosition(1, mouse_position - delta);
 
             yield return new WaitForSeconds(0.33f);
@@ -576,9 +574,7 @@ public class Player_Movement : MonoBehaviour
             yield return new WaitForSeconds(grapple_miss_cooldown);
 
             missed_grapple = false;
-
             can_grapple = true;
-
             Grapple_Bar.value = grapple_cooldown;
 
         }
@@ -596,7 +592,7 @@ public class Player_Movement : MonoBehaviour
             Destroy(col.gameObject);
         }
 
-        // collide with
+        // collide with Thorn
         if (col.gameObject.CompareTag("Thorn"))
         {
             source.clip = sounds[7];
@@ -606,11 +602,13 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
+    // load next from player
     private void ManagerLoadNext()
     {
         manager.LoadNext();
     }
 
+    // when falling
     private void Falling()
     {
         source.clip = sounds[8];
