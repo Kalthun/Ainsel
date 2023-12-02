@@ -125,6 +125,11 @@ public class Player_Movement : MonoBehaviour
 
         Counters();
 
+        if (transform.position.y < -20)
+        {
+            Falling();
+        }
+
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
@@ -605,6 +610,12 @@ public class Player_Movement : MonoBehaviour
     private void ManagerLoadNext()
     {
         manager.LoadNext();
+    }
+
+    public void Falling()
+    {
+        source.clip = sounds[8];
+        source.Play();
     }
 
 }
