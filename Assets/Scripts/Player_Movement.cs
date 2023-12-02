@@ -95,6 +95,11 @@ public class Player_Movement : MonoBehaviour
             return;
         }
 
+        if (transform.position.y < -20)
+        {
+            Falling();
+        }
+
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case < 0:
@@ -122,11 +127,6 @@ public class Player_Movement : MonoBehaviour
         Animate();
 
         Counters();
-
-        if (transform.position.y < -20)
-        {
-            Falling();
-        }
 
         // setting Line render to place body
         transform.GetComponent<LineRenderer>().SetPosition(0, transform.position);
