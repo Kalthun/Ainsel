@@ -126,6 +126,7 @@ public class Player_Movement : MonoBehaviour
         if (transform.position.y < -20)
         {
             Falling();
+            grapple_hold_time_counter = 0;
         }
 
         // setting Line render to place body
