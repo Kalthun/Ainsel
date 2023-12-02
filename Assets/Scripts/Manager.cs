@@ -24,6 +24,11 @@ public class Manager : MonoBehaviour
     [SerializeField] private GameObject PauseCanvas;
     [SerializeField] private Texture2D cursor;
     [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Toggle fullscreenToggle;
+
+    [SerializeField] private Dropdown resolutionSelection;
+    private List<int> widths;
+    private List<int> heights;
 
     private GameObject Title_Text;
     private Text start_text;
@@ -35,7 +40,8 @@ public class Manager : MonoBehaviour
     void Start()
     {
 
-        volumeSlider.value = 0.5f;
+        widths = new List<int>() {1920, 1280};
+        heights = new List<int>() {1080, 720};
 
         Camera = GameObject.Find("Camera");
         Object.DontDestroyOnLoad(Camera);
@@ -68,6 +74,8 @@ public class Manager : MonoBehaviour
     {
 
         CheckPause();
+
+        Debug.Log(Screen.fullScreenMode);
 
         if (isPaused) return;
 
@@ -105,7 +113,9 @@ public class Manager : MonoBehaviour
         }
 
         source.volume = volumeSlider.value;
+        Screen.SetResolution(widths[resolutionSelection.value], heights[resolutionSelection.value], fullscreenToggle.isOn);
     }
+
 
     private void TogglePause()
     {
