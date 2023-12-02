@@ -67,7 +67,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2698640780018204009, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
       propertyPath: sounds.Array.size
-      value: 6
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2698640780018204009, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
       propertyPath: sounds.Array.data[0]
@@ -93,6 +93,18 @@ PrefabInstance:
       propertyPath: sounds.Array.data[5]
       value: 
       objectReference: {fileID: 8300000, guid: ff656334c9736db84aae350c0ba3a113, type: 3}
+    - target: {fileID: 2698640780018204009, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: sounds.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 08532d60eb6d56e4d9a5df4cd7bfc6ef, type: 3}
+    - target: {fileID: 2698640780018204009, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: sounds.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: 13a28f319cd8aa043a96ff390b0fdc92, type: 3}
+    - target: {fileID: 2698640780018204009, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
+      propertyPath: sounds.Array.data[8]
+      value: 
+      objectReference: {fileID: 8300000, guid: 742adcb7aa4b52941b6694769ad53c77, type: 3}
     - target: {fileID: 2698640780018204009, guid: 3c51c0e494b25de46ac59b0ec0fc6311, type: 3}
       propertyPath: grapple_miss_cooldown
       value: 2

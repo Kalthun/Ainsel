@@ -588,14 +588,16 @@ public class Player_Movement : MonoBehaviour
         if (col.gameObject.CompareTag("Dust"))
         {
             Invoke("ManagerLoadNext", 3f);
-            // ! need sound
+            source.clip = sounds[6];
+            source.Play();
             Destroy(col.gameObject);
         }
 
         // collide with
         if (col.gameObject.CompareTag("Thorn"))
         {
-            // ! need sound
+            source.clip = sounds[7];
+            source.Play();
             manager.Spawn();
         }
     }
