@@ -139,6 +139,7 @@ public class Manager : MonoBehaviour
     public void Spawn()
     {
         Player.transform.position = GameObject.Find("SpawnPoint").transform.position;
+        Player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     public void LoadNext()
